@@ -25,16 +25,30 @@ function Home() {
   const [loading, setLoading] = useState(false);
 
   const[posts, setPosts] = useState([]);
+  const[Userss, setUserss] = useState([]);
+
 
   useEffect( () => {
     axios
       .get(`https://dummyjson.com/posts`)
       .then((res) => {
         setPosts(res.data.posts);
-        setLoading(false);
+        // setLoading(false);
       })
       .catch((error) => console.log(error.message));
   },[]);
+
+  useEffect( () => {
+    axios
+      .get(`https://dummyjson.com/users`)
+      .then((res) => {
+        console.log('&&&&&&&&&&&&&&&'. res)
+        setUserss(res.data.users);
+        // setLoading(false);
+      })
+      .catch((error) => console.log(error.message));
+  },[]);
+
 ///?limit=${page}&skip=${skip}
 //   useEffect(() => {
 //     fetchPost();
@@ -114,6 +128,9 @@ function Home() {
   const isLiked = (id) => likes.some((p) => p.id === id);
   const isDisLiked = (id) => disLikes.some((p) => p.id === id);
 
+  console.log('**************Userss', Userss);
+  
+
 
 const clickhandler = (id) => {
     navigate(`/post/${id}`);
@@ -127,6 +144,9 @@ const clickhandler = (id) => {
         </Typography>
         <Grid container spacing={2} display={"flex"} justifyContent={"center"}>
           {posts.map((post) => (
+                                      
+
+
             <Grid item key={post.id} xs={12} md={6}>
               <Card
                 sx={{
@@ -141,7 +161,11 @@ const clickhandler = (id) => {
                 <CardHeader
                   sx={{ height: "80px", bgcolor: "lightgray" }}
                   avatar={
-                    <Avatar sx={{ bgcolor: "black" }}>{post.userId}</Avatar>
+                    <Avatar sx={{ bgcolor: "black" }}>
+                      {console.log("&&&&&&&&&&&&&&123", Userss?.find((u) => post.userId === u.id)?.firstName?.charAt(0))
+                      }
+                        { Userss?.find((u) => post.userId === u.id)?.firstName?.charAt(0)}
+                        </Avatar>
                   }
                   title={
                     <Typography fontWeight="bold">{post.title}</Typography>
@@ -168,6 +192,7 @@ const clickhandler = (id) => {
                     <Stack>
                       <ThumbDownIcon
                         color={isDisLiked(post.id) ? "black" : "disabled"}
+                        // sx={{ color:{isDisLiked(post.id) ? "black" : "disabled"}}}
                       />
                       <Typography>
                         {isDisLiked(post.id)

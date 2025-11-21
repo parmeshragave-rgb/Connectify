@@ -5,9 +5,10 @@ import {
   TextField,
   Card,
   Avatar,
-  Box,
+  Box,  
   Typography,
   Stack,
+  Button,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import debounce from "lodash.debounce";
@@ -18,7 +19,7 @@ function SearchUsers() {
   const [query, setQuery] = useState("");
   const [usersdata, setUsersdata] = useState([]);
   const navigate = useNavigate();
-  // const [debounceQuery, setdebounceQuery] = useState("");
+  const [debounceQuery, setdebounceQuery] = useState("");
   
 
   useEffect(() => {
@@ -26,7 +27,19 @@ function SearchUsers() {
         .get(`https://dummyjson.com/users/search?q=${query}`)
         .then((res) => setUsersdata(res.data.users))
         .catch((error) => console.log(error.message));
-  }, [query]);
+  }, [debounceQuery]);
+
+  console.log('**********debounceQuery', debounceQuery)
+
+  const handleSearch = (event) => {
+const {target: {value}} = event;
+
+debounce(() => {
+  setdebounceQuery(value)
+}, 800)
+
+setQuery(value)
+  }
 
   const clickhandler = (id) => {
     navigate(`/userprofile/${id}`);
@@ -41,13 +54,14 @@ function SearchUsers() {
         <Stack spacing={1} sx={{ display: "flex", justifyContent: "center" }}>
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <TextField
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(event) => handleSearch(event)}
               variant="outlined"
               placeholder="Search"
               type="search"
               value={query}
               sx={{ width: { xs: "380px", sm: "600px", md: "900px" } }}
             />
+            <Button></Button>
           </Box>
 
           <Grid

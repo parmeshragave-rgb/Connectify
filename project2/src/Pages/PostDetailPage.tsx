@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
-
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 //   const { user, isAuthenticated } = useSelector((s: RootState) => s.auth);
 
 import {
@@ -13,10 +13,6 @@ import {
   Box,
   Typography,
   Grid,
-  CardHeader,
-  Card,
-  CardContent,
-  CardActionArea,
   TextField,
   Button,
   ButtonGroup,
@@ -46,6 +42,8 @@ function PostDetailPage(props) {
       .then((res) => setComments(res.data.comments))
       .catch((error) => console.log(error.message));
   }, []);
+
+
   console.log(post);
   console.log(comments);
 
@@ -106,36 +104,45 @@ function PostDetailPage(props) {
             </Grid>
 <Typography variant="h6" fontWeight={"bold"} fontStyle={"italic"} gutterBottom>Comments</Typography>
               
-            {comments.map((comment)  => (
-              <Grid  xs={12}>
+            {comments.length===0 ? (<Typography>No Comments</Typography>) : (comments.map((comment)  => (
+              <Grid spacing={1} xs={12}>
 
                 <Box
                   sx={{
                     height: "50px",
-                    width: "90%",
-                    p: 2,
+                    width: "100%",
+                    p: 1,
                     alignItems: "center",
                     justifyContent: "center",
                     cursor: "pointer",
+                    mt:1
                   }}
                 >
                   <Stack direction={"row"} spacing={2}>
-                    <Avatar sx={{ bgcolor: "black" }}>
+                    <Box sx={{display:"flex",alignItems:"center"}}>
+                    <Avatar sx={{ bgcolor: "black",mt:"10px" }}>
                       {comment.user.fullName.charAt(0).toUpperCase()}
                     </Avatar>
+                    </Box>
+                     <Stack sx={{p:"1px"}}>
+                      <Typography sx={{ mt: "10px",fontWeight:"bold" }}>
+                      @{comment.user.username}
+                    </Typography>
 
-                    <Typography sx={{ mt: "10px" }}>
+                    <Typography>
                       {comment.body}
                     </Typography>
                     
-                    <Typography sx={{ mt: "10px" }}>
-                      {comment.likes}
-                    </Typography>
-                    <Divider/>
+                    <Typography sx={{ mt: "2px" }}>
+                      <ThumbUpOutlinedIcon sx={{fontSize:"15px"}}/> {comment.likes}
+                      </Typography>
+                    </Stack>
                   </Stack>
+                    <Divider/>
+
                 </Box>
               </Grid>
-            ))}
+            )))}
 
           </Stack>
         </Grid>
