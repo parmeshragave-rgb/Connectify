@@ -18,10 +18,46 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 
 function Home() {
   const navigate = useNavigate();
-
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(10);
+  const [skip, setSkip] = useState(0);
   const [likes, setLikes] = useState([]);
+  const [disLikes, setdisLikes] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const[posts, setPosts] = useState([]);
+
+  useEffect( () => {
+    axios
+      .get(`https://dummyjson.com/posts`)
+      .then((res) => {
+        setPosts(res.data.posts);
+        setLoading(false);
+      })
+      .catch((error) => console.log(error.message));
+  },[]);
+///?limit=${page}&skip=${skip}
+//   useEffect(() => {
+//     fetchPost();
+//   }, [page]);
+
+//   useEffect(() => {
+//     if (loading == true) {
+//       setPage((prevPage) => prevPage + 10);
+//       setSkip((prevSkip) => prevSkip + 10);
+//     }
+//   }, [loading]);
+//   console.log(posts.length);
+//   const handleScroll = () => {
+//     if (
+//       document.body.scrollHeight - 300 <
+//       window.scrollY + window.innerHeight
+//     ) {
+//       setLoading(true);
+//     }
+//   };
+
+//   window.addEventListener("scroll", handleScroll);
+
 
   useEffect(() => {
     const saved = localStorage.getItem("likedPosts");
@@ -30,47 +66,28 @@ function Home() {
     }
   }, []);
 
-  const [posts, setPosts] = useState([]);
-
   useEffect(() => {
-    axios
-      .get(`https://dummyjson.com/posts`)
-      .then((res) => setPosts(res.data.posts))
-      .catch((error) => console.log(error.message));
-  },[])
-
-//   useEffect(() => {
-//     fetchPost();
-//   }, [page]);
-
-//   useEffect(() => {
-//     if (loading == true) {
-//       setPage((prevPage) => prevPage + 1);
-//     }
-//   }, [loading]);
-
-//   const handleScroll = () => {
-//       if (document.body.scrollHeight - 300 < window.scrollY + window.innerHeight) {
-//         setLoading(true);
-//       }
-//     };
-
-//   window.addEventListener("scroll", handleScroll());
-
-  const clickhandler = (id) => {
-    navigate(`/post/${id}`);
-  };
-
+    const saved = localStorage.getItem("dislikedPosts");
+    if (saved) {
+      setdisLikes(JSON.parse(saved));
+    }
+  }, []);
 
   
 
   const handleLike = (post) => {
     let updatedLikes = [...likes];
+   let updatedDisLikes = [...disLikes];
+
 
     if (updatedLikes.some((p) => p.id === post.id)) {
       updatedLikes = updatedLikes.filter((p) => p.id !== post.id);
     } else {
       updatedLikes.push(post);
+      updatedDisLikes = updatedDisLikes.filter((p) => p.id !== post.id);
+        setdisLikes(updatedDisLikes);
+    localStorage.setItem("dislikedPosts", JSON.stringify(updatedDisLikes));
+
     }
 
     setLikes(updatedLikes);
@@ -78,12 +95,29 @@ function Home() {
   };
 
   const handleDislike = (post) => {
-    let updatedLikes = likes.filter((p) => p.id !== post.id);
-    setLikes(updatedLikes);
+   let updatedDisLikes = [...disLikes];
+    let updatedLikes = [...likes];
+    
+    if (updatedDisLikes.some((p) => p.id === post.id)) {
+      updatedDisLikes = updatedDisLikes.filter((p) => p.id !== post.id);
+    } else {
+      updatedDisLikes.push(post);
+      updatedLikes = updatedLikes.filter((p) => p.id !== post.id);
+      setLikes(updatedLikes);
     localStorage.setItem("likedPosts", JSON.stringify(updatedLikes));
+    }
+
+    setdisLikes(updatedDisLikes);
+    localStorage.setItem("dislikedPosts", JSON.stringify(updatedDisLikes));
   };
 
   const isLiked = (id) => likes.some((p) => p.id === id);
+  const isDisLiked = (id) => disLikes.some((p) => p.id === id);
+
+
+const clickhandler = (id) => {
+    navigate(`/post/${id}`);
+  };
 
   return (
     <>
@@ -125,20 +159,20 @@ function Home() {
                       />
                       <Typography>
                         {isLiked(post.id)
-                          ? post.reactions.likes + 1
-                          : post.reactions.likes}
+                          ? post.reactions.likes + 1 :  post.reactions.likes}
+                       
                       </Typography>
                     </Stack>
                   </IconButton>
                   <IconButton onClick={() => handleDislike(post)}>
                     <Stack>
                       <ThumbDownIcon
-                        color={!isLiked(post.id) ? "black" : "disabled"}
+                        color={isDisLiked(post.id) ? "black" : "disabled"}
                       />
                       <Typography>
-                        {!isLiked(post.id)
-                          ? post.reactions.dislikes + 1
-                          : post.reactions.dislikes}
+                        {isDisLiked(post.id)
+                          ? post.reactions.dislikes + 1 : post.reactions.dislikes }
+                          
                       </Typography>
                     </Stack>
                   </IconButton>

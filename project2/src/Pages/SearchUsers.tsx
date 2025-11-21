@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useState } from "react";
 import {
   Grid,
@@ -12,30 +12,28 @@ import {
 import { useNavigate } from "react-router-dom";
 import debounce from "lodash.debounce";
 
+
 import axios from "axios";
 function SearchUsers() {
   const [query, setQuery] = useState("");
   const [usersdata, setUsersdata] = useState([]);
   const navigate = useNavigate();
+  // const [debounceQuery, setdebounceQuery] = useState("");
+  
 
-  const apiCall = debounce(() => {
-    try {
-      axios
+  useEffect(() => {
+    axios
         .get(`https://dummyjson.com/users/search?q=${query}`)
         .then((res) => setUsersdata(res.data.users))
         .catch((error) => console.log(error.message));
-    } catch (error) {
-      console.error(error);
-    }
-  }, 800);
-
-  useEffect(() => {
-    if (query) apiCall();
   }, [query]);
 
   const clickhandler = (id) => {
     navigate(`/userprofile/${id}`);
   };
+
+  // const handleSearch=(value) => {debounce((value) =>{setdebounceQuery(value)},800)}
+  
 
   return (
     <>

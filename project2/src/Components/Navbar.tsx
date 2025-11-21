@@ -150,7 +150,7 @@ function Navbar() {
         {drawer}
       </Drawer>
 
-     <Box sx={{ height: "110px" }} />
+     <Box sx={{ height: "80px" }} />
      </>
   )
 }

@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Grid, Card, CardHeader, Avatar, Typography, CardContent, CardActions, IconButton, Stack } from "@mui/material";
+import { Box, Grid, Card, CardHeader, Avatar, Typography, CardContent, CardActions, IconButton, Stack,Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { useNavigate } from "react-router-dom";
+
 function LikedPage() {
   const [likedPosts, setLikedPosts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const saved = localStorage.getItem("likedPosts");
@@ -17,6 +20,17 @@ function LikedPage() {
   };
 
   return (
+    <>
+    <Box sx={{ ml: "16px" }}>
+        <Button
+          variant="contained"
+          size="small"
+          sx={{ color: "white", bgcolor: "black", fontWeight: "bold" }}
+          onClick={() => navigate(-1)}
+        >
+          Back
+        </Button>
+      </Box>
     <Box sx={{ p: 2 }}>
       <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>Liked Posts <FavoriteIcon sx={{color:"red",mt:"15px"}}/></Typography>
 
@@ -51,6 +65,7 @@ function LikedPage() {
         </Grid>
       )}
     </Box>
+    </>
   );
 }
 
