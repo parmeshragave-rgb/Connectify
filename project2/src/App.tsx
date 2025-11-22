@@ -24,12 +24,12 @@ function App() {
           <Route path="/post/:id" element={<PostDetailPage/>} />  
           <Route path="/userprofile/:id" element={ <UserProfile/> } />  
           <Route path="liked" element={<LikedPage/>} /> 
-
-
+          <Route path="login" element={<Login/>} /> 
      </Routes>
       </Router> 
     </> 
   )
-}
+}         
+
 
 export default App

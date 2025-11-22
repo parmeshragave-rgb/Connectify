@@ -23,7 +23,6 @@ function Home() {
   const [likes, setLikes] = useState([]);
   const [disLikes, setdisLikes] = useState([]);
   const [loading, setLoading] = useState(false);
-
   const[posts, setPosts] = useState([]);
   const[Userss, setUserss] = useState([]);
 
@@ -40,9 +39,8 @@ function Home() {
 
   useEffect( () => {
     axios
-      .get(`https://dummyjson.com/users`)
+      .get(`https://dummyjson.com/users/?limit=0`)
       .then((res) => {
-        console.log('&&&&&&&&&&&&&&&'. res)
         setUserss(res.data.users);
         // setLoading(false);
       })
@@ -128,7 +126,7 @@ function Home() {
   const isLiked = (id) => likes.some((p) => p.id === id);
   const isDisLiked = (id) => disLikes.some((p) => p.id === id);
 
-  console.log('**************Userss', Userss);
+
   
 
 
@@ -161,10 +159,9 @@ const clickhandler = (id) => {
                 <CardHeader
                   sx={{ height: "80px", bgcolor: "lightgray" }}
                   avatar={
-                    <Avatar sx={{ bgcolor: "black" }}>
-                      {console.log("&&&&&&&&&&&&&&123", Userss?.find((u) => post.userId === u.id)?.firstName?.charAt(0))
-                      }
+                    <Avatar sx={{ bgcolor: "black" }} onClick={() => navigate(`/userprofile/${Userss?.find((u) => post.userId === u.id).id}`) }>
                         { Userss?.find((u) => post.userId === u.id)?.firstName?.charAt(0)}
+                        
                         </Avatar>
                   }
                   title={
@@ -176,11 +173,9 @@ const clickhandler = (id) => {
                   <Typography>{post.body}</Typography>
                 </CardContent>
                 <CardActions>
-                  <IconButton onClick={() => handleLike(post)}>
+                  <IconButton onClick={() => handleLike(post)} sx={{color:isLiked(post.id) ? "black" : "default"}}>
                     <Stack>
-                      <ThumbUpIcon
-                        color={isLiked(post.id) ? "black" : "disabled"}
-                      />
+                      <ThumbUpIcon/>
                       <Typography>
                         {isLiked(post.id)
                           ? post.reactions.likes + 1 :  post.reactions.likes}
@@ -188,11 +183,12 @@ const clickhandler = (id) => {
                       </Typography>
                     </Stack>
                   </IconButton>
-                  <IconButton onClick={() => handleDislike(post)}>
+                      
+                  <IconButton onClick={() => handleDislike(post)} sx={{color:isDisLiked(post.id) ? "black" : "default"}}>
                     <Stack>
                       <ThumbDownIcon
-                        color={isDisLiked(post.id) ? "black" : "disabled"}
-                        // sx={{ color:{isDisLiked(post.id) ? "black" : "disabled"}}}
+                        
+                       
                       />
                       <Typography>
                         {isDisLiked(post.id)
