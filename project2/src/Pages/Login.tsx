@@ -1,9 +1,17 @@
 
 import React, { useState } from "react";
-import {Box,Button,TextField,Typography,Paper,Stack,} from "@mui/material";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Paper,
+  Stack,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
+
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../Redux/auth/authActions";
 import type { User } from "../Redux/models/Auth";
@@ -16,7 +24,7 @@ interface DecodedToken {
 }
 
 export default function Login() {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [isLogin, setIsLogin] = useState(true);
@@ -79,7 +87,7 @@ export default function Login() {
       email,
       password,
     };
-The
+
     users.push(newUser);
     localStorage.setItem("users", JSON.stringify(users));
 
@@ -129,7 +137,8 @@ The
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-    
+        height: "100vh",
+        background: "linear-gradient(to right, #ece9e6, #ffffff)",
       }}
     >
       <Paper sx={{ p: 4, width: 400 }}>
@@ -164,7 +173,7 @@ The
               onChange={(e) => setPassword(e.target.value)}
             />
 
-            <Button type="submit" variant="contained" >
+            <Button type="submit" variant="contained" color="error">
               {isLogin ? "Login" : "Sign Up"}
             </Button>
 
@@ -189,6 +198,7 @@ The
           sx={{ mt: 2, cursor: "pointer" }}
           onClick={() => setIsLogin(!isLogin)}
           textAlign="center"
+          color="error"
         >
           {isLogin ? "New user? Sign up" : "Already have an account?"}
         </Typography>

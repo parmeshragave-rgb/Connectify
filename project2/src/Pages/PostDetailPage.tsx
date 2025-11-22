@@ -199,7 +199,7 @@ const AddComments = (currentComment) => {
                   <Button
                     variant="contained"
                     sx={{ bgcolor: "black", fontWeight: "bold" }}
-                    onClick={() => AddComments(currentComment)}
+                    onClick={() => { (user) ? AddComments(currentComment) : alert("login to comment")}}
                   >
                     Add Comment
                   </Button>

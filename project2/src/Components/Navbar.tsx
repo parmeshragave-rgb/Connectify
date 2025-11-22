@@ -2,9 +2,10 @@ import React from 'react'
 import { AppBar, Toolbar, Typography ,Box, Stack, Button,Menu,MenuItem,Drawer,List,ListItem,ListItemText,
   Divider,IconButton,Avatar} from '@mui/material'
 import { useNavigate } from 'react-router-dom'
-import { useSelector} from "react-redux";
+import { useSelector,useDispatch} from "react-redux";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from 'react';
+import { logout } from "../Redux/auth/authActions";
 
 
 function Navbar() {
@@ -13,10 +14,11 @@ function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const menuOpen = Boolean(anchorEl);
-
+  
   const handleAvatarClick = (event: any) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
+const dispatch=useDispatch()
   const handleLogout = () => {
     dispatch(logout());
     handleClose();
