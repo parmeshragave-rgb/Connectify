@@ -18,7 +18,7 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 
 function Home() {
   const navigate = useNavigate();
-  const [page, setPage] = useState(10);
+  const [limit, setLimit] = useState(10);
   const [skip, setSkip] = useState(0);
   const [likes, setLikes] = useState([]);
   const [disLikes, setdisLikes] = useState([]);
@@ -27,48 +27,49 @@ function Home() {
   const[Userss, setUserss] = useState([]);
 
 
-  useEffect( () => {
+  const fetchPost =() => {
     axios
-      .get(`https://dummyjson.com/posts`)
+      .get(`https://dummyjson.com/posts/?limit=${limit}&skip=${skip}`)
       .then((res) => {
-        setPosts(res.data.posts);
-        // setLoading(false);
+        setPosts((prevData) => [...prevData, ...res.data.posts]);
+        setLoading(false);
       })
       .catch((error) => console.log(error.message));
-  },[]);
+  };
 
   useEffect( () => {
     axios
       .get(`https://dummyjson.com/users/?limit=0`)
       .then((res) => {
         setUserss(res.data.users);
-        // setLoading(false);
+        
       })
       .catch((error) => console.log(error.message));
   },[]);
 
-///?limit=${page}&skip=${skip}
-//   useEffect(() => {
-//     fetchPost();
-//   }, [page]);
+  useEffect(() => {
+    fetchPost();
+  }, [skip]);
 
-//   useEffect(() => {
-//     if (loading == true) {
-//       setPage((prevPage) => prevPage + 10);
-//       setSkip((prevSkip) => prevSkip + 10);
-//     }
-//   }, [loading]);
-//   console.log(posts.length);
-//   const handleScroll = () => {
-//     if (
-//       document.body.scrollHeight - 300 <
-//       window.scrollY + window.innerHeight
-//     ) {
-//       setLoading(true);
-//     }
-//   };
+  useEffect(() => {
+    if (loading == true) {
+      setLimit((prevPage) => prevPage + 10);
+      setSkip((prevSkip) => prevSkip + 10);
+    }
+  }, [loading]);
 
-//   window.addEventListener("scroll", handleScroll);
+  // console.log(posts.length);
+
+  const handleScroll = () => {
+    if (
+      document.body.scrollHeight - 300 <
+      window.scrollY + window.innerHeight
+    ) {
+      setLoading(true);
+    }
+  };
+
+  window.addEventListener("scroll", handleScroll);
 
 
   useEffect(() => {

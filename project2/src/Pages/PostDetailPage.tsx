@@ -21,13 +21,13 @@ import {
 
 
 function PostDetailPage() {
-// const { user, isAuthenticated } = useSelector((s: RootState) => s.auth);
-
+  const { user, isAuthenticated } = useSelector((s: RootState) => s.auth);
   const [post, setpost] = useState({});
   const [comments, setComments] = useState([]);
   const [likes, setLikes] = useState([]);
   const [dislikes, setdisLikes] = useState([]);
-  const [userComment, setUserComment] = useState("");
+  const [userComment, setUserComment] = useState([]);
+  const [commentQuery, setcommentQuery] = useState("");
   const params = useParams();
   const id = params.id;
 
@@ -35,6 +35,7 @@ function PostDetailPage() {
 
   console.log(id);
 
+  console.log(userComment);
 
   
 
@@ -52,6 +53,36 @@ function PostDetailPage() {
       .catch((error) => console.log(error.message));
   }, []);
 
+
+useEffect(() => {
+    const saved = localStorage.getItem(`userComments${id}`);
+    if (saved) {
+      setUserComment(JSON.parse(saved));
+    }
+  }, []);
+
+
+interface AddComment {
+  Username?: string;
+  query?: string;
+
+}
+const currentComment:AddComment={
+  Username:user?.username,
+  query:commentQuery
+}
+
+const AddComments = (currentComment) => {
+  if(!currentComment.query?.trim()) return;
+    let UpdatedComments=[...userComment]
+    UpdatedComments.push(currentComment)
+    setUserComment(UpdatedComments)
+    localStorage.setItem(`userComments${id}`,JSON.stringify(UpdatedComments))
+    setcommentQuery("")
+
+}
+
+
   useEffect(() => {
     const saved = localStorage.getItem("likedPosts");
     if (saved) {
@@ -65,25 +96,6 @@ function PostDetailPage() {
       setdisLikes(JSON.parse(saved))
     }
   },[])
-
-  // const handleLikes = () => {
-  //  let  UpdatedLikes=[...likes]
-  //  let UpdatedDisLikes=[...dislikes]
-
-  //  if(UpdatedLikes.some((p) => p.id ===id )){
-  //       UpdatedLikes=UpdatedLikes.filter((f) => f.id!==id)
-  //  }
-  //  else{
-  //   UpdatedLikes.push(post)
-  //   UpdatedDisLikes=UpdatedDisLikes.filter((f) => f.id !== id)
-  //   setdisLikes(UpdatedDisLikes)
-  // localStorage.setItem("dislikedPosts",JSON.stringify(UpdatedDisLikes)) 
-  //  }
-  //  setLikes(UpdatedLikes)
-  //  localStorage.setItem("likedPosts",JSON.stringify(UpdatedLikes))
-  // }
-
-
 
   const handleLikes = (post) => {
     let updatedLikes = [...likes];
@@ -141,7 +153,7 @@ function PostDetailPage() {
       </Box>
 
       <Box sx={{ p: 2 }}>
-        <Grid cointainer>
+        <Grid cointainer >
           <Stack spacing={1}>
             <Grid>
               <Typography variant="h3" fontWeight={"bold"} gutterBottom>
@@ -172,20 +184,22 @@ function PostDetailPage() {
               </Stack>
             </Grid>
 
-            <Grid>
+            <Grid width={"100%"}>
               <Typography variant="h6" fontWeight={"bold"} gutterBottom>
                 Add Comments
               </Typography>
               <Stack direction={"row"} sx={{ width: "100%" }}>
                 <ButtonGroup>
                   <TextField
-                    value={userComment}
+                    value={commentQuery}
                     type="text"
                     placeholder="Add comment"
+                    onChange={(e) => setcommentQuery(e.target.value)}
                   />
                   <Button
                     variant="contained"
                     sx={{ bgcolor: "black", fontWeight: "bold" }}
+                    onClick={() => AddComments(currentComment)}
                   >
                     Add Comment
                   </Button>
@@ -200,11 +214,48 @@ function PostDetailPage() {
             >
               Comments
             </Typography>
-
-            {comments.length === 0 ? (
+{/* 
+            {(comments.length === 0 && userComment.length===0) ?(
               <Typography>No Comments</Typography>
-            ) : (
-              comments.map((comment) => (
+            ) : ( */}
+               {userComment.map((comment) => (
+                <Grid spacing={1} xs={12}>
+                  <Box
+                    sx={{
+                      height: "50px",
+                      width: "100%",
+                      p: 1,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      mt: 1,
+                    }}
+                  >
+                    <Stack direction={"row"} spacing={2}>
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <Avatar sx={{ bgcolor: "black", mt: "10px" }}>
+                          {comment?.Username?.charAt(0).toUpperCase()}
+                        </Avatar>
+                      </Box>
+                      <Stack sx={{ p: "1px" }}>
+                        <Typography sx={{ mt: "10px", fontWeight: "bold" }}>
+                          @{comment.Username}
+                        </Typography>
+
+                        <Typography>{comment.query}</Typography>
+
+                        <Typography sx={{ mt: "2px" }}>
+                          <ThumbUpOutlinedIcon sx={{ fontSize: "15px" }} />
+                          {/* {comment.likes} */}
+                        </Typography>
+                      </Stack>
+                    </Stack>
+                    <Divider />
+                  </Box>
+                </Grid>
+              ))}
+
+              {comments.map((comment) => (
                 <Grid spacing={1} xs={12}>
                   <Box
                     sx={{
@@ -244,8 +295,8 @@ function PostDetailPage() {
                     <Divider />
                   </Box>
                 </Grid>
-              ))
-            )}
+              ))}
+            {/* )} */}
           </Stack>
         </Grid>
       </Box>
