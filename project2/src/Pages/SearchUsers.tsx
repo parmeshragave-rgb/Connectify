@@ -68,14 +68,23 @@ function SearchUsers() {
                     cursor: "pointer",
                   }}
                 >
+                  
                   <Stack direction={"row"} spacing={2}>
-                    <Avatar sx={{ bgcolor: "black" }}>
+<Box sx={{ display: "flex", alignItems: "center" }}>
+
+                    <Avatar src={user.image} sx={{ bgcolor: "black",display:"flex",alignItems:"center",fontWeight:"bold" }}>
                       {user.firstName.charAt(0).toUpperCase()}
                     </Avatar>
-
-                    <Typography sx={{ mt: "10px" }}>
+                    <Stack>
+                    <Typography sx={{ ml: "12px" }}>
                       {user.firstName} {user.lastName}
                     </Typography>
+                     <Typography sx={{ ml: "12px",fontSize:"12px"}}>
+                      @{user.username}
+                    </Typography>
+                  </Stack>
+                  </Box>
+
                   </Stack>
                 </Card>
               </Grid>

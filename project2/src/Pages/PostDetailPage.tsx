@@ -84,14 +84,14 @@ const AddComments = (currentComment) => {
 
 
   useEffect(() => {
-    const saved = localStorage.getItem("likedPosts");
+    const saved = localStorage.getItem(`likedPosts${user.email}`);
     if (saved) {
       setLikes(JSON.parse(saved));
     }
   }, []);
 
   useEffect(() => {
-    const saved=localStorage.getItem("dislikedPosts")
+    const saved=localStorage.getItem(`dislikedPosts${user.email}`)
     if(saved){
       setdisLikes(JSON.parse(saved))
     }
@@ -108,12 +108,12 @@ const AddComments = (currentComment) => {
       updatedLikes.push(post);
       updatedDisLikes = updatedDisLikes.filter((p) => p.id !== post.id);
         setdisLikes(updatedDisLikes);
-    localStorage.setItem("dislikedPosts", JSON.stringify(updatedDisLikes));
+    localStorage.setItem(`dislikedPosts${user.email}`, JSON.stringify(updatedDisLikes));
 
     }
 
     setLikes(updatedLikes);
-    localStorage.setItem("likedPosts", JSON.stringify(updatedLikes));
+    localStorage.setItem(`likedPosts${user.email}`, JSON.stringify(updatedLikes));
   };
 
 
@@ -128,11 +128,11 @@ const AddComments = (currentComment) => {
     UpdatedDisLikes.push(post)
     UpdatedLikes=UpdatedLikes.filter((f) => f.id !== post.id)
     setLikes(UpdatedLikes)
-   localStorage.setItem("likedPosts",JSON.stringify(UpdatedLikes))
+   localStorage.setItem(`likedPosts${user.email}`,JSON.stringify(UpdatedLikes))
     
   }
   setdisLikes(UpdatedDisLikes)
-  localStorage.setItem("dislikedPosts",JSON.stringify(UpdatedDisLikes))
+  localStorage.setItem(`dislikedPosts${user.email}`,JSON.stringify(UpdatedDisLikes))
  }
 
  const isLiked = (id) => likes.some((p) => p.id === id);
@@ -214,10 +214,9 @@ const AddComments = (currentComment) => {
             >
               Comments
             </Typography>
-{/* 
-            {(comments.length === 0 && userComment.length===0) ?(
-              <Typography>No Comments</Typography>
-            ) : ( */}
+
+            {(comments.length === 0 && userComment.length===0) && <Typography sx={{display:"flex",justifyContent:"center",fontFamily:"sans-serif",color:"lightgray"}}>No Comments Yet</Typography>}
+               
                {userComment.map((comment) => (
                 <Grid spacing={1} xs={12}>
                   <Box
@@ -233,7 +232,7 @@ const AddComments = (currentComment) => {
                   >
                     <Stack direction={"row"} spacing={2}>
                       <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <Avatar sx={{ bgcolor: "black", mt: "10px" }}>
+                        <Avatar sx={{ bgcolor: "black", mt: "10px",fontWeight:"bold" }}>
                           {comment?.Username?.charAt(0).toUpperCase()}
                         </Avatar>
                       </Box>

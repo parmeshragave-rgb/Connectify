@@ -3,20 +3,22 @@ import { Box, Grid, Card, CardHeader, Avatar, Typography, CardContent, CardActio
 import DeleteIcon from "@mui/icons-material/Delete";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function LikedPage() {
   const [likedPosts, setLikedPosts] = useState([]);
   const navigate = useNavigate();
-
+  const { user} = useSelector((s: RootState) => s.auth);
+  
   useEffect(() => {
-    const saved = localStorage.getItem("likedPosts");
+    const saved = localStorage.getItem(`likedPosts${user.email}`);
     if (saved) setLikedPosts(JSON.parse(saved));
   }, []);
 
   const removePost = (id) => {
     const updated = likedPosts.filter((p) => p.id !== id);
     setLikedPosts(updated);
-    localStorage.setItem("likedPosts", JSON.stringify(updated));
+    localStorage.setItem(`likedPosts${user.email}`, JSON.stringify(updated));
   };
 
   return (

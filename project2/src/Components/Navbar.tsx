@@ -17,8 +17,8 @@ function Navbar() {
   
   const handleAvatarClick = (event: any) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
-
-const dispatch=useDispatch()
+  const dispatch=useDispatch()
+ 
   const handleLogout = () => {
     dispatch(logout());
     handleClose();
@@ -94,9 +94,9 @@ const dispatch=useDispatch()
             <Box sx={{flexGrow:1}}/>
             <Box sx={{display:{xs: "none", md: "flex" }}}>
               <Stack direction={"row"}>
-                 <Button variant='text' color='inherit' onClick={() => navigate('/')}>Home</Button>
-                 <Button variant='text'  color='inherit' onClick={() => navigate('/liked')}>Liked</Button>
-                 <Button variant='text' color='inherit'onClick={() => navigate('/search')}>User</Button>
+                 <Button variant='text' color='inherit' onClick={() => navigate('/')} sx={{fontWeight:"bold"}}>Home</Button>
+                 <Button variant='text'  color='inherit' onClick={() => navigate('/liked')} sx={{fontWeight:"bold"}}>Liked</Button>
+                 <Button variant='text' color='inherit'onClick={() => navigate('/search')} sx={{fontWeight:"bold"}}>User</Button>
 </Stack>
              </Box>   
              <Box sx={{display:{xs: "none", md: "flex" }}}> 
