@@ -7,6 +7,7 @@ import {
   Typography,
   Paper,
   Stack,
+  Toolbar,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
@@ -132,16 +133,25 @@ export default function Login() {
   };
 
   return (
+    <>
+    <Stack sx={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+      <Typography variant="h5" sx={{fontWeight:"bold"}}>
+                Welcome to Connectify!
+      </Typography>
+      <Typography variant="body1" sx={{fontWeight:"bold",fontFamily:"sans-serif",fontStyle:"italic"}}>
+                Log in and see what everyone's talking about
+      </Typography>
+    </Stack>
     <Box
       sx={{
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
-        background: "linear-gradient(to right, #ece9e6, #ffffff)",
+        height: {xs:"75",md:"480px"},
+      
       }}
     >
-      <Paper sx={{ p: 4, width: 400 }}>
+      <Paper sx={{ p: 3, width: 380}} elevation={0}>
         <Typography variant="h5" fontWeight="bold" mb={2} textAlign="center">
           {isLogin ? "Login" : "Sign Up"}
         </Typography>
@@ -150,7 +160,8 @@ export default function Login() {
           <Stack spacing={2}>
             {!isLogin && (
               <TextField
-                label="Email"
+              
+                placeholder="Email"
                 value={email}
                 error={!!errors.email}
                 helperText={errors.email}
@@ -158,14 +169,14 @@ export default function Login() {
               />
             )}
             <TextField
-              label="Username"
+              placeholder="Username"
               value={username}
               error={!!errors.username}
               helperText={errors.username}
               onChange={(e) => setUsername(e.target.value)}
             />
             <TextField
-              label="Password"
+              placeholder="Password"
               type="password"
               value={password}
               error={!!errors.password}
@@ -173,7 +184,7 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
 
-            <Button type="submit" variant="contained" color="error">
+            <Button type="submit" variant="contained"  sx={{bgcolor:"black",fontWeight:"bold"}}>
               {isLogin ? "Login" : "Sign Up"}
             </Button>
 
@@ -195,10 +206,10 @@ export default function Login() {
         </form>
 
         <Typography
-          sx={{ mt: 2, cursor: "pointer" }}
+          sx={{ mt: 2, cursor: "pointer"}}
           onClick={() => setIsLogin(!isLogin)}
           textAlign="center"
-          color="error"
+          
         >
           {isLogin ? "New user? Sign up" : "Already have an account?"}
         </Typography>
@@ -206,5 +217,6 @@ export default function Login() {
         {message && <Typography>{message}</Typography>}
       </Paper>
     </Box>
+    </>
   );
 }

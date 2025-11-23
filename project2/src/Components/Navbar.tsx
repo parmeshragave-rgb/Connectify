@@ -41,6 +41,8 @@ function Navbar() {
           { label: "Home", to: "/" },
           { label: "Users", to: "/search" },
           { label: "Liked", to: "/liked" },
+          { label: "Quotes", to: "/quotes" },
+
 
         ].map((item) => (
           <ListItem
@@ -94,9 +96,11 @@ function Navbar() {
             <Box sx={{flexGrow:1}}/>
             <Box sx={{display:{xs: "none", md: "flex" }}}>
               <Stack direction={"row"}>
-                 <Button variant='text' color='inherit' onClick={() => navigate('/')} sx={{fontWeight:"bold"}}>Home</Button>
+                 <Button variant='text' color='inherit' onClick={() => {navigate('/')}} sx={{fontWeight:"bold"}}>Home</Button>
                  <Button variant='text'  color='inherit' onClick={() => navigate('/liked')} sx={{fontWeight:"bold"}}>Liked</Button>
                  <Button variant='text' color='inherit'onClick={() => navigate('/search')} sx={{fontWeight:"bold"}}>User</Button>
+                 <Button variant='text' color='inherit'onClick={() => navigate('/quotes')} sx={{fontWeight:"bold"}}>Quotes</Button>
+
 </Stack>
              </Box>   
              <Box sx={{display:{xs: "none", md: "flex" }}}> 

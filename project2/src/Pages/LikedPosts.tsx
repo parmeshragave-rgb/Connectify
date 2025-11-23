@@ -3,12 +3,25 @@ import { Box, Grid, Card, CardHeader, Avatar, Typography, CardContent, CardActio
 import DeleteIcon from "@mui/icons-material/Delete";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector ,useDispatch} from "react-redux";
+import type { RootState } from "../Redux";
+import { fetchUsersData } from "../Redux/Users/userActions";
 
 function LikedPage() {
   const [likedPosts, setLikedPosts] = useState([]);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { user} = useSelector((s: RootState) => s.auth);
+  const { userdata} =useSelector((s:RootState) => s.users)
+ 
+
+ 
+  
+  useEffect(() => {
+
+    dispatch(fetchUsersData())
+
+  }, []);
   
   useEffect(() => {
     const saved = localStorage.getItem(`likedPosts${user.email}`);
@@ -21,6 +34,10 @@ function LikedPage() {
     localStorage.setItem(`likedPosts${user.email}`, JSON.stringify(updated));
   };
 
+ if (!user) {
+    navigate("/login");
+    return;
+  }
   return (
     <>
     <Box sx={{ ml: "16px" }}>
@@ -44,7 +61,7 @@ function LikedPage() {
             <Grid item xs={12} md={6} key={post.id} display={"flex"} justifyContent={"center"}>
               <Card sx={{ width: "400px", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }} elevation={5}>
                 <CardHeader
-                  avatar={<Avatar sx={{ bgcolor: "black" }}>{post.userId}</Avatar>}
+                  avatar={<Avatar src={userdata.find((u) => post.userId === u.id)?.image} sx={{ bgcolor: "black" }}></Avatar>}
                   title={<Typography fontWeight="bold">{post.title}</Typography>}
                   subheader={<Typography>{post.views} views</Typography>}
                 />

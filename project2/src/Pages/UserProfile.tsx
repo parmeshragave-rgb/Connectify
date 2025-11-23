@@ -229,20 +229,7 @@ function UserProfile() {
                         </Stack>
                       </IconButton>
                     </CardActions>
-                    {/* <CardActions disableSpacing>
-                                <IconButton>
-                                    <Stack>
-                                        <ThumbUpIcon />
-                                        <Typography>{post.reactions.likes}</Typography>
-                                    </Stack>
-                                </IconButton>
-                                <IconButton>
-                                    <Stack>
-                                        <ThumbDownIcon />
-                                        <Typography>{post.reactions.dislikes}</Typography>
-                                    </Stack>
-                                </IconButton>
-                            </CardActions> */}
+                   
                   </Card>
                 </Grid>
               ))}
@@ -255,3 +242,6 @@ function UserProfile() {
 }
 
 export default UserProfile;
+
+
+

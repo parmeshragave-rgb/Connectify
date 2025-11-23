@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchUsersData } from "../Redux/Users/userActions";
 import {
   CardContent,
   Grid,
@@ -19,7 +20,10 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 
 function Home() {
+  const dispatch = useDispatch();
+
   const { user } = useSelector((s: RootState) => s.auth);
+  const { userdata } = useSelector((s: RootState) => s.users);
 
   const navigate = useNavigate();
   const [limit, setLimit] = useState(10);
@@ -28,12 +32,9 @@ function Home() {
   const [disLikes, setdisLikes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
-  const [Userss, setUserss] = useState([]);
+  
 
-  if (!user) {
-    navigate("/login");
-    return;
-  }
+  
 
   const fetchPost = () => {
     axios
@@ -46,12 +47,7 @@ function Home() {
   };
 
   useEffect(() => {
-    axios
-      .get(`https://dummyjson.com/users/?limit=0`)
-      .then((res) => {
-        setUserss(res.data.users);
-      })
-      .catch((error) => console.log(error.message));
+    dispatch(fetchUsersData());
   }, []);
 
   useEffect(() => {
@@ -145,13 +141,17 @@ function Home() {
     navigate(`/post/${id}`);
   };
 
+  if (!user) {
+    navigate("/login");
+    return;
+  }
   return (
     <>
       <Box sx={{ p: 2 }}>
         <Typography variant="h3" fontWeight="bold" gutterBottom>
           Posts
         </Typography>
-        <Grid container spacing={2} display={"flex"} justifyContent={"center"}>
+        <Grid container spacing={2} justifyContent={"center"}>
           {posts.map((post) => (
             <Grid item xs={12} md={6}>
               <Card
@@ -165,17 +165,20 @@ function Home() {
                 elevation={5}
               >
                 <CardHeader
-                  sx={{ height: "80px", bgcolor: "black",color:"whitesmoke"}}
-                  
+                  sx={{ height: "80px", bgcolor: "black", color: "whitesmoke" }}
                   avatar={
                     <Avatar
-                      src={Userss?.find((u) => post.userId === u.id)?.image}
+                      src={userdata?.find((u) => post.userId === u.id)?.image}
                       sx={{ bgcolor: "black", fontWeight: "bold" }}
                       onClick={() =>
-                        navigate(`/userprofile/${Userss?.find((u) => post.userId === u.id).id}`)
+                        navigate(
+                          `/userprofile/${
+                           userdata.find((u) => post.userId === u.id).id
+                          }`
+                        )
                       }
                     >
-                      {Userss?.find(
+                      {userdata?.find(
                         (u) => post.userId === u.id
                       )?.firstName?.charAt(0)}
                     </Avatar>
@@ -185,39 +188,42 @@ function Home() {
                   }
                   subheader={<Typography>{post.views} views</Typography>}
                 />
-                <CardContent onClick={() => clickhandler(post.id)} >
+                <CardContent onClick={() => clickhandler(post.id)}>
                   <Typography>{post.body}</Typography>
                 </CardContent>
-                <CardActionArea sx={{ bgcolor: "lightgrey",border:0,borderRadius:"0px"}} >
-                <CardActions>
-                  <IconButton
-                    onClick={() => handleLike(post)}
-                    sx={{ color: isLiked(post.id) ? "black" : "default" }}
-                  >
-                    <Stack>
-                      <ThumbUpIcon />
-                      <Typography>
-                        {isLiked(post.id)
-                          ? post.reactions.likes + 1
-                          : post.reactions.likes}
-                      </Typography>
-                    </Stack>
-                  </IconButton>
+                <CardActionArea
+                  component="section"
+                  sx={{ bgcolor: "lightgrey" }}
+                >
+                  <CardActions>
+                    <IconButton
+                      onClick={() => handleLike(post)}
+                      sx={{ color: isLiked(post.id) ? "black" : "default" }}
+                    >
+                      <Stack>
+                        <ThumbUpIcon />
+                        <Typography>
+                          {isLiked(post.id)
+                            ? post.reactions.likes + 1
+                            : post.reactions.likes}
+                        </Typography>
+                      </Stack>
+                    </IconButton>
 
-                  <IconButton
-                    onClick={() => handleDislike(post)}
-                    sx={{ color: isDisLiked(post.id) ? "black" : "default" }}
-                  >
-                    <Stack>
-                      <ThumbDownIcon />
-                      <Typography>
-                        {isDisLiked(post.id)
-                          ? post.reactions.dislikes + 1
-                          : post.reactions.dislikes}
-                      </Typography>
-                    </Stack>
-                  </IconButton>
-                </CardActions>
+                    <IconButton
+                      onClick={() => handleDislike(post)}
+                      sx={{ color: isDisLiked(post.id) ? "black" : "default" }}
+                    >
+                      <Stack>
+                        <ThumbDownIcon />
+                        <Typography>
+                          {isDisLiked(post.id)
+                            ? post.reactions.dislikes + 1
+                            : post.reactions.dislikes}
+                        </Typography>
+                      </Stack>
+                    </IconButton>
+                  </CardActions>
                 </CardActionArea>
               </Card>
             </Grid>

@@ -10,6 +10,7 @@ import {
   Stack,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import debounce from "lodash.debounce";
 
 
@@ -20,6 +21,13 @@ function SearchUsers() {
   const navigate = useNavigate();
   // const [debounceQuery, setdebounceQuery] = useState("");
   
+  const { user } = useSelector((s: RootState) => s.auth);
+
+
+  if (!user) {
+    navigate("/login");
+    return;
+  }
 
   useEffect(() => {
     axios
