@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
 import {
   Grid,
@@ -24,10 +24,6 @@ function SearchUsers() {
   const { user } = useSelector((s: RootState) => s.auth);
 
 
-  if (!user) {
-    navigate("/login");
-    return;
-  }
 
   useEffect(() => {
     axios
@@ -42,6 +38,10 @@ function SearchUsers() {
 
   // const handleSearch=(value) => {debounce((value) =>{setdebounceQuery(value)},800)}
   
+  if (!user) {
+    navigate("/login");
+    return;
+  }
 
   return (
     <>

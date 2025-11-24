@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Grid, Card, CardHeader, Avatar, Typography, CardContent, CardActions, IconButton, Stack,Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -14,9 +14,6 @@ function LikedPage() {
   const { user} = useSelector((s: RootState) => s.auth);
   const { userdata} =useSelector((s:RootState) => s.users)
  
-
- 
-  
   useEffect(() => {
 
     dispatch(fetchUsersData())

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
@@ -15,6 +15,7 @@ import {
   Avatar,
   Box,
   CardActionArea,
+  CircularProgress
 } from "@mui/material";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
@@ -145,6 +146,7 @@ function Home() {
     navigate("/login");
     return;
   }
+
   return (
     <>
       <Box sx={{ p: 2 }}>
@@ -231,7 +233,7 @@ function Home() {
         </Grid>
       </Box>
 
-      {loading && <Typography>Loading....</Typography>}
+      {loading && <Typography sx={{display:"flex",justifyContent:"center",color:"black"}}><CircularProgress sx={{color:"black"}}/></Typography>}
     </>
   );
 }

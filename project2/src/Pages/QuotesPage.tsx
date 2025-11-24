@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { fetchQuerydata } from "../Redux/Quotes/QuotesActions";
 import { connect } from "react-redux";
 import {
@@ -31,12 +31,12 @@ function QuotesPage({ fetchQuerydata, quotesdata }) {
       {quotesdata.quotes.map((quote) => (
         <>
           
-            <Grid>
+            <Grid item xs={12}>
               <Card
                
                 sx={{
-                  width: { xs: "380px", md: "800px" },
-                  height: { xs: "300px", md: "250px" },
+                  width: { xs: "380px",sm:"700px", md: "800px" },
+                  height: { xs: "100%", sm:"100%", md: "100%" },
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
@@ -44,7 +44,7 @@ function QuotesPage({ fetchQuerydata, quotesdata }) {
                 elevation={5}
               >
                 <CardHeader
-                  sx={{ height: "60px",bgcolor: "black", color: "whitesmoke" }}
+                  sx={{ height: { xs:"70px",sm:"60px",md:"60px"},bgcolor: "black", color: "whitesmoke" }}
                   avatar={
                     <Avatar
                       sx={{
@@ -60,19 +60,19 @@ function QuotesPage({ fetchQuerydata, quotesdata }) {
                     <Typography fontWeight="bold">{quote.author}</Typography>
                   }
                 />
-                <CardContent sx={{height:"150px"}}>
+                <CardContent>
                   <Stack>
                     <Typography
                       sx={{
                         fontFamily: "fantasy",
                         fontStyle: "italic",
                         fontSize: "20px",
-                      }}
+           sm:"350px",           }}
                     >
                       "{quote.quote}"
                     </Typography>
-                    <Typography sx={{ ml: "500px", mt: "5px",fontFamily: "fantasy",fontStyle: "italic",fontSize: "18px"}}>By</Typography>
-                    <Typography sx={{ ml: "520px",fontFamily: "fantasy",fontStyle: "italic",fontSize: "18px" }}>
+                    <Typography sx={{ ml: {xs:"240px",sm:"440px",md:"500px"}, mt: "5px",fontFamily: "fantasy",fontStyle: "italic",fontSize: "18px"}}>By</Typography>
+                    <Typography sx={{ ml: {xs:"250px",sm:"450px",md:"520px"},fontFamily: "fantasy",fontStyle: "italic",fontSize: "18px" }}>
                       -{quote.author}
                     </Typography>
                   </Stack>

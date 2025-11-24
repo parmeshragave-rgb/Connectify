@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -21,7 +21,7 @@ import {
 
 
 function PostDetailPage() {
-  const { user, isAuthenticated } = useSelector((s: RootState) => s.auth);
+  const { user} = useSelector((s: RootState) => s.auth);
   const [post, setpost] = useState({});
   const [comments, setComments] = useState([]);
   const [likes, setLikes] = useState([]);
@@ -32,12 +32,6 @@ function PostDetailPage() {
   const id = params.id;
 
   const navigate = useNavigate();
-
-  console.log(id);
-
-  console.log(userComment);
-
-  
 
   useEffect(() => {
     axios
@@ -199,7 +193,7 @@ const AddComments = (currentComment) => {
                   <Button
                     variant="contained"
                     sx={{ bgcolor: "black", fontWeight: "bold" }}
-                    onClick={() => { (user) ? AddComments(currentComment) : alert("login to comment")}}
+                    onClick={() => AddComments(currentComment)}
                   >
                     Add Comment
                   </Button>
@@ -245,7 +239,7 @@ const AddComments = (currentComment) => {
 
                         <Typography sx={{ mt: "2px" }}>
                           <ThumbUpOutlinedIcon sx={{ fontSize: "15px" }} />
-                          {/* {comment.likes} */}
+                          
                         </Typography>
                       </Stack>
                     </Stack>
@@ -295,7 +289,7 @@ const AddComments = (currentComment) => {
                   </Box>
                 </Grid>
               ))}
-            {/* )} */}
+          
           </Stack>
         </Grid>
       </Box>

@@ -7,12 +7,10 @@ import {
   Typography,
   Paper,
   Stack,
-  Toolbar,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
-
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../Redux/auth/authActions";
 import type { User } from "../Redux/models/Auth";
@@ -56,9 +54,7 @@ export default function Login() {
   const handleLocalLogin = () => {
     const users = JSON.parse(localStorage.getItem("users") || "[]");
 
-    const user = users.find(
-      (u: any) => u.username === username && u.password === password
-    );
+    const user = users.find((u) => u.username === username && u.password === password);
 
     if (!user) {
       setMessage("Invalid username or password!");
@@ -105,7 +101,7 @@ export default function Login() {
     navigate("/");
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!validate()) return;
 

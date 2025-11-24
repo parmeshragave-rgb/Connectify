@@ -1,4 +1,4 @@
-import React from "react";
+
 import { useState, useEffect } from "react";
 import axios from "axios";
 import {
@@ -14,7 +14,6 @@ import {
   Box,
   Divider,
   CircularProgress,
-  Toolbar,
   Button,
 } from "@mui/material";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
@@ -30,7 +29,7 @@ function UserProfile() {
   const [currentUser, setcurrentUser] = useState({});
   const [likes, setLikes] = useState([]);
   const [disLikes, setdisLikes] = useState([]);
-  const { user, isAuthenticated } = useSelector((s: RootState) => s.auth);
+  const { user} = useSelector((s: RootState) => s.auth);
 
   useEffect(() => {
     axios
@@ -45,8 +44,6 @@ function UserProfile() {
       .then((res) => setcurrentUser(res.data))
       .catch((error) => console.log(error.message));
   }, []);
-
-  //  console.log(userPosts)
 
   useEffect(() => {
     const saved = localStorage.getItem(`likedPosts${user.email}`);
