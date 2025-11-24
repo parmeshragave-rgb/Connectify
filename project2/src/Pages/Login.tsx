@@ -69,9 +69,7 @@ export default function Login() {
     };
 
     dispatch(loginSuccess(reduxUser, "local-token"));
-    localStorage.setItem("token", "true");
-    localStorage.setItem("loggedInUser", JSON.stringify(reduxUser));
-
+    
     navigate("/");
   };
 
@@ -96,7 +94,7 @@ export default function Login() {
     };
 
     dispatch(loginSuccess(reduxUser, "local-token"));
-    localStorage.setItem("token", "true");
+    // localStorage.setItem("token", "true");
 
     navigate("/");
   };
@@ -119,10 +117,6 @@ export default function Login() {
       picture: decoded.picture,
       id: decoded.sub,  
     }
-
-    
-    localStorage.setItem("token", token);
-    localStorage.setItem("loggedInUser", JSON.stringify(user));
 
     dispatch(loginSuccess(user, token));
     navigate("/");

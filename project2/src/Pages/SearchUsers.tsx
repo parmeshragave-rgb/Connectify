@@ -19,7 +19,7 @@ function SearchUsers() {
   const [query, setQuery] = useState("");
   const [usersdata, setUsersdata] = useState([]);
   const navigate = useNavigate();
-  // const [debounceQuery, setdebounceQuery] = useState("");
+  const [debounceQuery, setdebounceQuery] = useState("");
   
   const { user } = useSelector((s: RootState) => s.auth);
 
@@ -30,13 +30,13 @@ function SearchUsers() {
         .get(`https://dummyjson.com/users/search?q=${query}`)
         .then((res) => setUsersdata(res.data.users))
         .catch((error) => console.log(error.message));
-  }, [query]);
+  }, [debounceQuery]);
 
   const clickhandler = (id) => {
     navigate(`/userprofile/${id}`);
   };
 
-  // const handleSearch=(value) => {debounce((value) =>{setdebounceQuery(value)},800)}
+  const handleSearch=(value) => {debounce((value) =>{setdebounceQuery(value)},800) ;setQuery(value)}
   
   if (!user) {
     navigate("/login");
@@ -49,7 +49,7 @@ function SearchUsers() {
         <Stack spacing={1} sx={{ display: "flex", justifyContent: "center" }}>
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <TextField
-              onChange={(event) => setQuery(event.target.value)}
+              onChange={(event) => handleSearch(event.target.value)}
               variant="outlined"
               placeholder="Search"
               type="search"

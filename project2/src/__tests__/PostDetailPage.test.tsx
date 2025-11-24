@@ -1,5 +1,5 @@
 
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import PostDetailPage from "../Pages/PostDetailPage";
 import axios from "axios";
 import configureStore from "redux-mock-store";
@@ -8,6 +8,13 @@ import { MemoryRouter, Route, Routes } from "react-router-dom";
 
 jest.mock("axios");
 const mockStore = configureStore([]);
+
+const mockNavigate = jest.fn();
+
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useNavigate: () => mockNavigate
+}));
 
 describe("PostDetailPage Component", () => {
   test("renders post & comments from mocked axios", async () => {
@@ -61,7 +68,15 @@ describe("PostDetailPage Component", () => {
    
     expect(screen.getByText("Mock post content")).toBeInTheDocument();
 
+    // expect(screen.getByRole(/Comments/i)).toBeInTheDocument();
+    expect(screen.getByText("Add Comments")).toBeInTheDocument();
+    expect(screen.getByRole("button" ,{name:"Add Comment"})).toBeInTheDocument();
+    expect(screen.getByRole("button" ,{name:/back/i})).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button" ,{name:/back/i}))
+    expect(mockNavigate).toHaveBeenCalledWith(-1);
     
+
+
     expect(await screen.findByText("@john")).toBeInTheDocument();
     expect(screen.getByText("Awesome post!")).toBeInTheDocument();
   });

@@ -1,5 +1,4 @@
 
-jest.mock("axios");
 
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
@@ -9,6 +8,7 @@ import configureStore from "redux-mock-store";
 import {thunk} from "redux-thunk";
 import { Provider } from "react-redux";
 
+jest.mock("axios");
 
 jest.mock("../Redux/Users/userActions", () => ({
   fetchUsersData: () => jest.fn(),
@@ -47,7 +47,7 @@ describe("Home Component", () => {
 
     const store = mockStore({
       auth: { user: { email: "test@test.com" } },
-      users: { userdata: [{ id: 100, firstName: "T", image: "" }] },
+      users: { userdata: [{ id: 100, firstName: "Tknendwdw", image: "" }] },
     });
 
     render(
@@ -59,5 +59,10 @@ describe("Home Component", () => {
     );
 
     expect(await screen.findByText(/mock post 1/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Body text/i)).toBeInTheDocument();
+    expect(await screen.findByText(/20/i)).toBeInTheDocument();
+    
+
+
   });
 });

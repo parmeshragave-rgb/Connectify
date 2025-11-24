@@ -1,4 +1,3 @@
-
 import { render, screen } from "@testing-library/react";
 import UserProfile from "../Pages/UserProfile";
 import { Provider } from "react-redux";
@@ -29,7 +28,15 @@ describe("UserProfile Component", () => {
     axios.get
       .mockResolvedValueOnce({
         data: {
-          posts: [{ id: 101, title: "Post 1", body: "Body 1", views: 5, reactions: { likes: 2, dislikes: 1 } }],
+          posts: [
+            {
+              id: 101,
+              title: "Post 1",
+              body: "Body 1",
+              views: 5,
+              reactions: { likes: 2, dislikes: 1 },
+            },
+          ],
         },
       })
       .mockResolvedValueOnce({
@@ -54,10 +61,9 @@ describe("UserProfile Component", () => {
       </Provider>
     );
 
-    
     expect(await screen.findByText("Post 1")).toBeInTheDocument();
     expect(screen.getByText("Body 1")).toBeInTheDocument();
     expect(screen.getByText("John Doe")).toBeInTheDocument();
-    // expect(screen.getByText("@john")).toBeInTheDocument();
+
   });
 });

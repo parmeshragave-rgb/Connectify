@@ -72,9 +72,26 @@ describe("Navbar Component", () => {
     );
 
    
-    fireEvent.click(screen.getByText("j"));
+    fireEvent.click(screen.getByText(/j/i));
 
-    const logoutBtn = screen.getByText("Logout");
+    const HomeBtn = screen.getByText(/Home/i);
+    fireEvent.click(HomeBtn);
+    expect(mockNavigate).toHaveBeenCalledWith("/");
+     
+
+    const UsersBtn = screen.getByText(/User/i);
+    fireEvent.click(UsersBtn );
+    expect(mockNavigate).toHaveBeenCalledWith('/search');
+
+    const likeBtn = screen.getByText(/Liked/i);
+    fireEvent.click(likeBtn);
+    expect(mockNavigate).toHaveBeenCalledWith("/liked");
+
+    const quotesBtn = screen.getByText(/Quotes/i);
+    fireEvent.click(quotesBtn);
+    expect(mockNavigate).toHaveBeenCalledWith("/quotes");
+
+    const logoutBtn = screen.getByText(/Logout/i);
     fireEvent.click(logoutBtn);
 
     expect(store.getActions()).toContainEqual({ type: "LOGOUT" });

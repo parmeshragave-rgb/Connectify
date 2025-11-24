@@ -51,7 +51,7 @@ describe("Login Page", () => {
     const toggleButton = screen.getByText("New user? Sign up");
     fireEvent.click(toggleButton);
 
-    expect(screen.getByText("Sign Up")).toBeInTheDocument();
+    expect(screen.getByRole("heading" ,{name :"Sign up"})).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Email")).toBeInTheDocument();
   });
 });
