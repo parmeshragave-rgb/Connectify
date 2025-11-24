@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Box,
   Button,
@@ -74,27 +74,16 @@ export default function Login() {
   };
 
   const handleSignup = () => {
-    const users = JSON.parse(localStorage.getItem("users") || "[]");
-
-    const newUser = {
-      id: Date.now(),
-      username,
-      email,
-      password,
-    };
-
-    users.push(newUser);
-    localStorage.setItem("users", JSON.stringify(users));
 
     const reduxUser: User = {
-      id: newUser.id,
-      username: newUser.username,
-      email: newUser.email,
+   id: Date.now(),
+      username,
+      email,
       picture: "",
     };
 
     dispatch(loginSuccess(reduxUser, "local-token"));
-    // localStorage.setItem("token", "true");
+  
 
     navigate("/");
   };

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import { Box, Grid, Card, CardHeader, Avatar, Typography, CardContent, CardActions, IconButton, Stack,Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -6,9 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { useSelector ,useDispatch} from "react-redux";
 import type { RootState } from "../Redux";
 import { fetchUsersData } from "../Redux/Users/userActions";
+import { removePost } from "../Redux/LikedPost/LikedPostActions";
 
 function LikedPage() {
-  const [likedPosts, setLikedPosts] = useState([]);
+  const { likedPosts} = useSelector((s: RootState) => s.like);
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user} = useSelector((s: RootState) => s.auth);
@@ -20,21 +22,18 @@ function LikedPage() {
 
   }, []);
   
-  useEffect(() => {
-    const saved = localStorage.getItem(`likedPosts${user.email}`);
-    if (saved) setLikedPosts(JSON.parse(saved));
-  }, []);
+  const userLikedPosts=likedPosts.filter(p => p.likedBy === user.email)
 
-  const removePost = (id) => {
-    const updated = likedPosts.filter((p) => p.id !== id);
-    setLikedPosts(updated);
-    localStorage.setItem(`likedPosts${user.email}`, JSON.stringify(updated));
+  const removePosthandler = (post) => {
+    dispatch(removePost(post,user?.email));
+
+    
   };
 
  if (!user) {
     navigate("/login");
     return;
-  }
+  } 
   return (
     <>
     <Box sx={{ ml: "16px" }}>
@@ -50,25 +49,25 @@ function LikedPage() {
     <Box sx={{ p: 2 }}>
       <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>Liked Posts <FavoriteIcon sx={{color:"red",mt:"15px"}}/></Typography>
 
-      {likedPosts.length === 0 ? (
+      {userLikedPosts.length === 0 ? (
         <Typography>No liked posts yet.</Typography>
       ) : (
         <Grid container spacing={2}  display={"flex"} justifyContent={"center"}>
-          {likedPosts.map((post) => (
+          {userLikedPosts.map((post) => (
             <Grid item xs={12} md={6} key={post.id} display={"flex"} justifyContent={"center"}>
               <Card sx={{ width: "400px", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }} elevation={5}>
-                <CardHeader
-                  avatar={<Avatar src={userdata.find((u) => post.userId === u.id)?.image} sx={{ bgcolor: "black" }}></Avatar>}
+                <CardHeader sx={{bgcolor:"black",color:"whitesmoke"}}
+                  avatar={<Avatar src={userdata.find((u) => post.userId === u.id)?.image} sx={{ bgcolor: "black",cursor:"pointer" }}></Avatar>}
                   title={<Typography fontWeight="bold">{post.title}</Typography>}
                   subheader={<Typography>{post.views} views</Typography>}
                 />
 
-                <CardContent>
-                  <Typography>{post.body}</Typography>
+                <CardContent sx={{cursor:"pointer" }}>
+                  <Typography >{post.body}</Typography>
                 </CardContent>
 
                 <CardActions>
-                  <IconButton onClick={() => removePost(post.id)}>
+                  <IconButton onClick={() => removePosthandler(post)}>
                     <Stack alignItems="center">
                       <DeleteIcon color="error" />
                       <Typography>Remove</Typography>

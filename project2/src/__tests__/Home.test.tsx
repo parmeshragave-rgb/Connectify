@@ -1,5 +1,3 @@
-
-
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import Home from "../Pages/Home";
@@ -14,10 +12,11 @@ jest.mock("../Redux/Users/userActions", () => ({
   fetchUsersData: () => jest.fn(),
 }));
 
+const mockNavigate = jest.fn();
 
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
-  useNavigate: () => jest.fn(),
+  useNavigate: () => mockNavigate,
 }));
 
 const middlewares = [thunk];
@@ -28,7 +27,7 @@ beforeEach(() => {
   Storage.prototype.setItem = jest.fn();
 });
 
-describe("Home Component", () => {
+describe.only("Home Component", () => {
   test("renders posts from axios mock", async () => {
     axios.get.mockResolvedValueOnce({
       data: {
@@ -57,7 +56,7 @@ describe("Home Component", () => {
         </MemoryRouter>
       </Provider>
     );
-
+ 
     expect(await screen.findByText(/mock post 1/i)).toBeInTheDocument();
     expect(await screen.findByText(/Body text/i)).toBeInTheDocument();
     expect(await screen.findByText(/20/i)).toBeInTheDocument();

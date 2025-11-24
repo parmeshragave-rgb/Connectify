@@ -68,7 +68,7 @@ describe("PostDetailPage Component", () => {
    
     expect(screen.getByText("Mock post content")).toBeInTheDocument();
 
-    // expect(screen.getByRole(/Comments/i)).toBeInTheDocument();
+    
     expect(screen.getByText("Add Comments")).toBeInTheDocument();
     expect(screen.getByRole("button" ,{name:"Add Comment"})).toBeInTheDocument();
     expect(screen.getByRole("button" ,{name:/back/i})).toBeInTheDocument();

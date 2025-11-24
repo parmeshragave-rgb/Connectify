@@ -6,7 +6,7 @@ import { useSelector,useDispatch} from "react-redux";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from 'react';
 import { logout } from "../Redux/auth/authActions";
-
+import type { RootState } from '../Redux';
 
 function Navbar() {
   const navigate=useNavigate();

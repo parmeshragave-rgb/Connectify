@@ -1,10 +1,9 @@
-
 import { render, screen, fireEvent } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 import Login from "../Pages/Login";
-import { GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const GOOGLE_TEST_CLIENT_ID = "test-client-id";
 
@@ -23,9 +22,9 @@ describe("Login Page", () => {
     render(
       <Provider store={store}>
         <GoogleOAuthProvider clientId={GOOGLE_TEST_CLIENT_ID}>
-        <MemoryRouter>
-          <Login />
-        </MemoryRouter>
+          <MemoryRouter>
+            <Login />
+          </MemoryRouter>
         </GoogleOAuthProvider>
       </Provider>
     );
@@ -39,19 +38,19 @@ describe("Login Page", () => {
     render(
       <Provider store={store}>
         <GoogleOAuthProvider clientId={GOOGLE_TEST_CLIENT_ID}>
-
-        <MemoryRouter>
-          <Login />
-        </MemoryRouter>
+          <MemoryRouter>
+            <Login />
+          </MemoryRouter>
         </GoogleOAuthProvider>
-
       </Provider>
     );
 
     const toggleButton = screen.getByText("New user? Sign up");
     fireEvent.click(toggleButton);
 
-    expect(screen.getByRole("heading" ,{name :"Sign up"})).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Sign up" })
+    ).toBeInTheDocument();
     expect(screen.getByPlaceholderText("Email")).toBeInTheDocument();
   });
 });

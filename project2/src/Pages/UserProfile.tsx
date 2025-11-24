@@ -21,6 +21,7 @@ import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import PostCard from "../Components/ReusableCard";
 function UserProfile() {
   const navigate = useNavigate();
   const params = useParams();
@@ -167,68 +168,13 @@ function UserProfile() {
             {userPosts.length===0 && <Box sx={{display:"flex",justifyContent:"center",color:"lightgray",alignItems:"center" ,height:"100%"}}><Typography variant="h5">No Posts Yet</Typography></Box>}
             
 
-            <Box sx={{ display: "flex", flexDirection: "row" }}>
+            <Box sx={{ display: "flex", flexDirection: {xs:"column",md:"row"},mb:"20px" }}>
               {userPosts.map((post) => (
-                <Grid key={post.id} xs={12} md={6}>
-                  <Card
-                    sx={{
-                      width: { xs: "320px", md: "400px" },
-                      height: "100%",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                      m: "10px",
-                    }}
-                    elevation={5}
-                  >
-                    <CardHeader
-                      sx={{ height: "80px", bgcolor: "black",color:"whitesmoke"}}
-                      avatar={
-                        <Avatar sx={{ bgcolor: "whitesmoke",color:"black",fontWeight:"bold" }} >{currentUser?.firstName?.charAt(0)}</Avatar>
-                        
-                      }
-                      title={<Typography fontWeight="bold">{post.title}</Typography>}
-                      subheader={<Typography>{post.views} views</Typography>}
-                    />
-
-                    <CardContent onClick={() => clickhandler(post.id)}>
-                      <Typography>{post.body}</Typography>
-                    </CardContent>
-
-                    <CardActions>
-                      <IconButton
-                        onClick={() => handleLike(post)}
-                        sx={{ color: isLiked(post.id) ? "black" : "default" }}
-                      >
-                        <Stack>
-                          <ThumbUpIcon />
-                          <Typography>
-                            {isLiked(post.id)
-                              ? post.reactions.likes + 1
-                              : post.reactions.likes}
-                          </Typography>
-                        </Stack>
-                      </IconButton>
-
-                      <IconButton
-                        onClick={() => handleDislike(post)}
-                        sx={{
-                          color: isDisLiked(post.id) ? "black" : "default",
-                        }}
-                      >
-                        <Stack>
-                          <ThumbDownIcon />
-                          <Typography>
-                            {isDisLiked(post.id)
-                              ? post.reactions.dislikes + 1
-                              : post.reactions.dislikes}
-                          </Typography>
-                        </Stack>
-                      </IconButton>
-                    </CardActions>
-                   
-                  </Card>
+                <Grid key={post.id} xs={12} md={6} marginBottom={2}>
+             <PostCard post={post} userdata={[currentUser]} handleLike={handleLike} handleDislike={handleDislike} isLiked={isLiked} isDisLiked={isDisLiked} clickhandler={clickhandler} navigate={navigate} />
+                  
                 </Grid>
+                
               ))}
             </Box>
           </Stack>

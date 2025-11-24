@@ -11,33 +11,58 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import debounce from "lodash.debounce";
 
 
 import axios from "axios";
 function SearchUsers() {
+  const [limit, setLimit] = useState(30);
+  const [skip, setSkip] = useState(0);
+  const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
   const [usersdata, setUsersdata] = useState([]);
   const navigate = useNavigate();
-  const [debounceQuery, setdebounceQuery] = useState("");
   
+
   const { user } = useSelector((s: RootState) => s.auth);
-
-
 
   useEffect(() => {
     axios
-        .get(`https://dummyjson.com/users/search?q=${query}`)
-        .then((res) => setUsersdata(res.data.users))
-        .catch((error) => console.log(error.message));
-  }, [debounceQuery]);
+      .get(
+        `https://dummyjson.com/users/?limit=${limit}&skip=${skip}&search?q=${query}`
+      )
+
+      .then((res) => {
+        setUsersdata((prevData) => [...prevData, ...res.data.users]);
+        setLoading(false);
+      })
+
+      .catch((error) => console.log(error.message));
+  }, [query, skip]);
+
+  useEffect(() => {
+    if (loading == true) {
+      setLimit((prevPage) => prevPage + 10);
+      setSkip((prevSkip) => prevSkip + 10);
+    }
+  }, [loading]);
+
+  const handleScroll = () => {
+    if (
+      document.body.scrollHeight - 300 <
+      window.scrollY + window.innerHeight
+    ) {
+      setLoading(true);
+    }
+  };
+
+  window.addEventListener("scroll", handleScroll);
 
   const clickhandler = (id) => {
     navigate(`/userprofile/${id}`);
   };
 
-  const handleSearch=(value) => {debounce((value) =>{setdebounceQuery(value)},800) ;setQuery(value)}
-  
+  // const handleSearch=(value) => {debounce((value) =>{setdebounceQuery(value)},800)}
+
   if (!user) {
     navigate("/login");
     return;
@@ -49,7 +74,7 @@ function SearchUsers() {
         <Stack spacing={1} sx={{ display: "flex", justifyContent: "center" }}>
           <Box sx={{ display: "flex", justifyContent: "center" }}>
             <TextField
-              onChange={(event) => handleSearch(event.target.value)}
+              onChange={(event) => setQuery(event.target.value)}
               variant="outlined"
               placeholder="Search"
               type="search"
@@ -76,23 +101,28 @@ function SearchUsers() {
                     cursor: "pointer",
                   }}
                 >
-                  
                   <Stack direction={"row"} spacing={2}>
-<Box sx={{ display: "flex", alignItems: "center" }}>
-
-                    <Avatar src={user.image} sx={{ bgcolor: "black",display:"flex",alignItems:"center",fontWeight:"bold" }}>
-                      {user.firstName.charAt(0).toUpperCase()}
-                    </Avatar>
-                    <Stack>
-                    <Typography sx={{ ml: "12px" }}>
-                      {user.firstName} {user.lastName}
-                    </Typography>
-                     <Typography sx={{ ml: "12px",fontSize:"12px"}}>
-                      @{user.username}
-                    </Typography>
-                  </Stack>
-                  </Box>
-
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                      <Avatar
+                        src={user.image}
+                        sx={{
+                          bgcolor: "black",
+                          display: "flex",
+                          alignItems: "center",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {user.firstName.charAt(0).toUpperCase()}
+                      </Avatar>
+                      <Stack>
+                        <Typography sx={{ ml: "12px" }}>
+                          {user.firstName} {user.lastName}
+                        </Typography>
+                        <Typography sx={{ ml: "12px", fontSize: "12px" }}>
+                          @{user.username}
+                        </Typography>
+                      </Stack>
+                    </Box>
                   </Stack>
                 </Card>
               </Grid>

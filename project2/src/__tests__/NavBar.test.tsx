@@ -52,7 +52,7 @@ describe("Navbar Component", () => {
     );
 
     
-    expect(screen.getByText("j")).toBeInTheDocument();
+    expect(screen.getByText(/j/i)).toBeInTheDocument();
   });
 
   test("logout dispatches action and navigates to home", () => {

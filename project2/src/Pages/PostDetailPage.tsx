@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
+import { likePost,dislikePost } from "../Redux/LikedPost/LikedPostActions";
+
 import {
   Stack,
   Box,
@@ -24,13 +26,13 @@ function PostDetailPage() {
   const { user} = useSelector((s: RootState) => s.auth);
   const [post, setpost] = useState({});
   const [comments, setComments] = useState([]);
-  const [likes, setLikes] = useState([]);
-  const [dislikes, setdisLikes] = useState([]);
   const [userComment, setUserComment] = useState([]);
   const [commentQuery, setcommentQuery] = useState("");
   const params = useParams();
   const id = params.id;
-
+  const { likedPosts,dislikedPosts } = useSelector((s: RootState) => s.like);
+  const dispatch = useDispatch();
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -76,61 +78,18 @@ const AddComments = (currentComment) => {
 
 }
 
-
-  useEffect(() => {
-    const saved = localStorage.getItem(`likedPosts${user.email}`);
-    if (saved) {
-      setLikes(JSON.parse(saved));
-    }
-  }, []);
-
-  useEffect(() => {
-    const saved=localStorage.getItem(`dislikedPosts${user.email}`)
-    if(saved){
-      setdisLikes(JSON.parse(saved))
-    }
-  },[])
-
   const handleLikes = (post) => {
-    let updatedLikes = [...likes];
-   let updatedDisLikes = [...dislikes];
-
-
-    if (updatedLikes.some((p) => p.id === post.id)) {
-      updatedLikes = updatedLikes.filter((p) => p.id !== post.id);
-    } else {
-      updatedLikes.push(post);
-      updatedDisLikes = updatedDisLikes.filter((p) => p.id !== post.id);
-        setdisLikes(updatedDisLikes);
-    localStorage.setItem(`dislikedPosts${user.email}`, JSON.stringify(updatedDisLikes));
-
-    }
-
-    setLikes(updatedLikes);
-    localStorage.setItem(`likedPosts${user.email}`, JSON.stringify(updatedLikes));
+    dispatch(likePost(post,user?.email))
   };
 
+  const handleDisLikes = (post) => {
+   dispatch(dislikePost(post,user?.email))
+  };
 
- const handleDisLikes= (post) => {
-  let UpdatedDisLikes=[...dislikes]
-  let  UpdatedLikes=[...likes]
-
-  if(UpdatedDisLikes.some((p) => p.id===post.id)){
-    UpdatedDisLikes=UpdatedDisLikes.filter((f) => f.id!== post.id)
-  }
-  else{
-    UpdatedDisLikes.push(post)
-    UpdatedLikes=UpdatedLikes.filter((f) => f.id !== post.id)
-    setLikes(UpdatedLikes)
-   localStorage.setItem(`likedPosts${user.email}`,JSON.stringify(UpdatedLikes))
-    
-  }
-  setdisLikes(UpdatedDisLikes)
-  localStorage.setItem(`dislikedPosts${user.email}`,JSON.stringify(UpdatedDisLikes))
- }
-
- const isLiked = (id) => likes.some((p) => p.id === id);
-  const isDisLiked = (id) => dislikes.some((p) => p.id === id);
+const isLiked = (id) => likedPosts.some((p) => p.id === id);
+  const isDisLiked = (id) => dislikedPosts.some((p) => p.id === id);
+//  const isLiked = (id) => likedPosts.some((p) => p.id === id && p.likedby ===user.email);
+//   const isDisLiked = (id) => dislikedPosts.some((p) => p.id === id && p.dislikedby === user.email);
 
 
   return (
@@ -249,7 +208,7 @@ const AddComments = (currentComment) => {
               ))}
 
               {comments.map((comment) => (
-                <Grid spacing={1} xs={12}>
+                <Grid spacing={1} sx={{xs:"12"}}>
                   <Box
                     sx={{
                       height: "50px",
