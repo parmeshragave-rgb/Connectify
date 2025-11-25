@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Avatar, Box, Typography, Button, Stack } from "@mui/material";
+import { Avatar, Box, Typography, Button, Stack,Grid } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 
 import PostCard from "../Components/ReusableCard";
@@ -17,7 +17,7 @@ const Profile = () => {
   };
 
   const handleDislike = (post: Post) => {
-    dispatch(dislikePost(post, user.email));
+    dispatch(dislikePost(post, user?.email));
   };
 
   const isLiked = (id: number) => likedPosts.some((p) => p.id === id);
@@ -35,6 +35,7 @@ const Profile = () => {
 
   const [userPosts, setUserPosts] = useState<Post[]>([]);
   const [openAdd, setOpenAdd] = useState(false);
+
   useEffect(() => {
     const item = localStorage.getItem(`user_posts_${user?.email}`);
     const saved = item ? JSON.parse(item) : [];
@@ -93,12 +94,14 @@ const Profile = () => {
             No posts yet... Click "Add Post"
           </Typography>
         ) : (
-          userPosts.map((post) => (
+           <Grid container spacing={2} justifyContent={"flex-start"}>
+          {userPosts.map((post) => (
+             <Grid item xs={12} md={6}>
             <PostCard
               key={post.id}
               post={post}
               userdata={[
-                { id: Date.now(), image: "", firstName: user.username },
+                { id: Date.now(), image: "", firstName: user?.username },
               ]}
               handleLike={handleLike}
               handleDislike={handleDislike}
@@ -110,7 +113,10 @@ const Profile = () => {
               onDelete={handleDeletePost}
               user={user}
             />
-          ))
+            </Grid>
+           
+          ))}
+           </Grid>
         )}
       </Box>
 

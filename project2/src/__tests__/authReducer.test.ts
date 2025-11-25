@@ -1,5 +1,5 @@
-import authReducer from "./authReducer";
-import { loginSuccess, logout } from "./authActions";
+import authReducer from "../Redux/auth/authReducer";
+import { loginSuccess, logout } from "../Redux/auth/authActions";
 
 describe("Auth Reducer", () => {
   const initialState = {

@@ -25,7 +25,7 @@ import {
 function PostDetailPage() {
   const { user} = useSelector((s: RootState) => s.auth);
   const [post, setpost] = useState<Post>({} as Post);
-  const [comments, setComments] = useState<any[]>([]);
+  const [comments, setComments] = useState<ApiComment[]>([]);
   const [userComment, setUserComment] = useState<AddComment[]>([]);
   const [commentQuery, setcommentQuery] = useState("");
   const params = useParams();
@@ -74,10 +74,23 @@ interface AddComment {
   query?: string;
 
 }
+
+interface ApiComment {
+  id: number,
+      body: string,
+      postId: number,
+      likes: number
+  user: {
+        id: number,
+        username: string,
+        fullName: string
+      }
+}
+
 const currentComment:AddComment={
   Username:user?.username,
   query:commentQuery
-}
+};
 
 const AddComments = (currentComment: AddComment) => {
   if(!currentComment.query?.trim()) return;

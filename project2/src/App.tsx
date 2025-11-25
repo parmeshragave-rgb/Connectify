@@ -1,10 +1,6 @@
 import "./App.css";
 import { lazy,Suspense} from 'react';
-
 import Navbar from "./Components/Navbar";
-
-
-
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 const LazySearchUsers=lazy(() => import('./Pages/SearchUsers'))
 const LazyPostDetailPage=lazy(() => import('./Pages/PostDetailPage'))

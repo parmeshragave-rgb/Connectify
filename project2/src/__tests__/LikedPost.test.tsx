@@ -96,6 +96,7 @@ describe("LikedPage Component", () => {
     renderLiked(store);
 
     const actions = store.getActions();
+    expect(actions.some((a) => a.type === "FETCH_USERS")).toBe(true);const actions = store.getActions();
     expect(actions.some((a) => a.type === "FETCH_USERS")).toBe(true);
   });
 });

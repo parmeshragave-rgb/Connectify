@@ -14,6 +14,7 @@ import { jwtDecode } from "jwt-decode";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../Redux/auth/authActions";
 import type { User } from "../Redux/models/Auth";
+import type { AuthAction } from "../Redux/auth/authActions";
 
 interface DecodedToken {
   name: string;

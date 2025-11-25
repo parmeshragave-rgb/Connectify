@@ -7,7 +7,9 @@ import {
   Box,
   Typography,
   Stack,
+  CircularProgress,
 } from "@mui/material";
+
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -18,10 +20,13 @@ function SearchUsers() {
   const [limit, setLimit] = useState(30);
   const [skip, setSkip] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [loadingdata, setLoadingdata] = useState(false);
+  const [error, setError] = useState("");
+
   const [query, setQuery] = useState("");
   const [debouncedQuery, setDebouncedQuery] = useState("");
-  const [usersdata, setUsersdata] = useState([]);
-  const [noResult, setnoResult] = useState(0);
+  const [usersdata, setUsersdata] = useState<userdata[]>([]);
+  const [noResult, setnoResult] = useState(1);
 
   const navigate = useNavigate();
   const { user } = useSelector((s: RootState) => s.auth);
@@ -46,16 +51,21 @@ function SearchUsers() {
         : `https://dummyjson.com/users/search?q=${searchValue}`;
 
     try {
+      setLoadingdata(true)
       const res = await axios.get(url);
 
       setUsersdata((prev) =>
         newSkip === 0 ? res.data.users : [...prev, ...res.data.users]
+        
       );
       setnoResult(res.data.total);
       setLoading(false);
+      setLoadingdata(false)
     } catch (err) {
-      console.error(err);
+      setError(err);
       setLoading(false);
+      setLoadingdata(false)
+
     }
   };
 
@@ -85,13 +95,22 @@ function SearchUsers() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const clickhandler = (id) => navigate(`/userprofile/${id}`);
+  const clickhandler = (id:number) => navigate(`/userprofile/${id}`);
 
   if (!user) {
     navigate("/login");
     return null;
   }
+interface userdata{
+  
+      id: number,
+      firstName: string,
+      lastName: string,
+      username: string,
+      image:''
 
+    
+}
   return (
     <>
       <Box sx={{ p: 2, display: "flex", justifyContent: "center" }}>
@@ -103,16 +122,25 @@ function SearchUsers() {
               placeholder="Search"
               type="search"
               value={query}
-              sx={{ width: { xs: "380px", sm: "600px", md: "900px" } }}
+              sx={{ width: { xs: "340px", sm: "600px", md: "900px" } }}
             />
           </Box>
 
           <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
-            {!noResult && (
+            {loadingdata && <Typography variant="h5" color="error" fontWeight={"bold"}>
+                <CircularProgress sx={{color:"black"}}/>
+              </Typography>}
+
+              {error &&
               <Typography variant="h5" color="error" fontWeight={"bold"}>
-                No Result Found !!!
-              </Typography>
-            )}
+                {error}
+              </Typography>}
+
+              {!noResult &&
+              <Typography variant="h5" color="error" fontWeight={"bold"}>
+                No match Found!!!
+              </Typography>}
+            
           </Box>
           <Grid
             container
@@ -125,15 +153,16 @@ function SearchUsers() {
                 <Card
                   sx={{
                     height: "50px",
-                    width: "180px",
+                    width: {md:"180px",sm:"180px",xs:"300px"},
                     p: 2,
                     alignItems: "center",
                     justifyContent: "center",
                     cursor: "pointer",
+                    bgcolor:"lightgray"
                   }}
                 >
                   <Stack direction={"row"} spacing={2}>
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Box sx={{ display: "flex", alignItems: "center"}}>
                       <Avatar
                         src={user.image}
                         sx={{
@@ -146,7 +175,7 @@ function SearchUsers() {
                         {user.firstName.charAt(0).toUpperCase()}
                       </Avatar>
                       <Stack>
-                        <Typography sx={{ ml: "12px" }}>
+                        <Typography sx={{ ml: "12px",fontWeight:"bold" }}>
                           {user.firstName} {user.lastName}
                         </Typography>
                         <Typography sx={{ ml: "12px", fontSize: "12px" }}>

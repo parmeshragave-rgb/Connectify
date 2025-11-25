@@ -10,10 +10,11 @@ import {
   Stack,
   Typography,
   Box,
-  CircularProgress
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import SkeletonCard from "../Components/SkeletonCard";
+import type { RootState } from "../Redux";
 function QuotesPage({ fetchQuerydata, quotesdata }) {
   const navigate=useNavigate()
   const { user } = useSelector((s: RootState) => s.auth);
@@ -27,7 +28,28 @@ function QuotesPage({ fetchQuerydata, quotesdata }) {
     return;
   } 
   return quotesdata.loading ? (
-     <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>
+    <>
+    
+
+    <Grid container spacing={2} justifyContent="center">
+            <Grid item xs={12}>
+
+      {[1,2,3, 4, 5].map((i) => (
+        <SkeletonCard
+          key={i}
+          variant="vertical"
+          sx={{
+            width: { xs: "340px",sm:"700px", md: "800px" },
+            mb: 3,
+            justifyContent: "center",
+
+          }}
+        />
+      ))}
+      </Grid>
+      </Grid>
+   
+    </>
   ) : quotesdata.error ? (
     <Typography>{quotesdata.error}</Typography>
   ) : (
@@ -40,11 +62,11 @@ function QuotesPage({ fetchQuerydata, quotesdata }) {
       {quotesdata.quotes.map((quote) => (
         <>
           
-            <Grid item xs={12}>
+            <Grid  xs={12}>
               <Card
                
                 sx={{
-                  width: { xs: "380px",sm:"700px", md: "800px" },
+                  width: { xs: "340px",sm:"700px", md: "800px" },
                   height: { xs: "100%", sm:"100%", md: "100%" },
                   display: "flex",
                   flexDirection: "column",

@@ -21,6 +21,7 @@ function LikedPage() {
     dispatch(fetchUsersData())
 
   }, []);
+  
   if (!user) {
     navigate("/login");
     return;

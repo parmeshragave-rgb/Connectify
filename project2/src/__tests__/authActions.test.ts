@@ -1,4 +1,4 @@
-import { loginSuccess, logout, LOGIN_SUCCESS, LOGOUT } from "./authActions";
+import { loginSuccess, logout, LOGIN_SUCCESS, LOGOUT } from "../Redux/auth/authActions";
 
 describe("Auth Actions", () => {
   test("loginSuccess returns correct action", () => {

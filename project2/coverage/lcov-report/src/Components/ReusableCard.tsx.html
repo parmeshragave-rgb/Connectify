@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60% </span>
+                <span class="strong">41.17% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/15</span>
+                <span class='fraction'>7/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">58.33% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/12</span>
+                <span class='fraction'>0/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">30% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/10</span>
+                <span class='fraction'>0/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">60% </span>
+                <span class="strong">43.75% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>9/15</span>
+                <span class='fraction'>7/16</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -133,27 +133,18 @@
 <a name='L68'></a><a href='#L68'>68</a>
 <a name='L69'></a><a href='#L69'>69</a>
 <a name='L70'></a><a href='#L70'>70</a>
-<a name='L71'></a><a href='#L71'>71</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -161,7 +152,26 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -207,11 +217,16 @@
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import DeleteIcon from '@mui/icons-material/Delete';
-const PostCard=( {post,userdata,handleLike,handleDislike,isLiked,isDisLiked,clickhandler,navigate,showDelete=false,onDelete=<span class="fstat-no" title="function not covered" >() =</span>&gt; {}}) =&gt; {
-return (
+import { useSelector } from "react-redux";
+import type { RootState } from "../Redux";
+const PostCard=<span class="fstat-no" title="function not covered" >( {</span>post,userdata,handleLike,handleDislike,isLiked,isDisLiked,clickhandler,navigate,showDelete=<span class="branch-0 cbranch-no" title="branch not covered" >false,</span>onDelete=<span class="fstat-no" title="function not covered" ><span class="branch-0 cbranch-no" title="branch not covered" >() =</span>&gt; {}}</span>) =&gt; {
+  
+&nbsp;
+  const {user} = <span class="cstat-no" title="statement not covered" >useSelector(<span class="fstat-no" title="function not covered" >(s</span>:RootState) =&gt; <span class="cstat-no" title="statement not covered" >s.auth)</span></span>
+<span class="cstat-no" title="statement not covered" >return (</span>
 &lt;Card
   sx={{
-    width: { xs: "350px", md: "400px" },
+    width: { xs: "350px", md: "380px" },
     height: "100%",
     display: "flex",
     flexDirection: "column",
@@ -223,7 +238,7 @@ return (
     sx={{ height: "80px", bgcolor: "black", color: "whitesmoke" }}
     avatar={
       &lt;Avatar
-        src={userdata?.find((u) =&gt; post.userId === u.id)?.image}
+        src={userdata?.find(<span class="fstat-no" title="function not covered" >(u</span>) =&gt; <span class="cstat-no" title="statement not covered" >post.userId === u.id)</span>?.image}
         sx={{ bgcolor: "black", fontWeight: "bold",cursor:"pointer" }}
         onClick={<span class="fstat-no" title="function not covered" >() =</span>&gt;
 <span class="cstat-no" title="statement not covered" >          navigate(</span>
@@ -231,11 +246,11 @@ return (
           )
         }
       &gt;
-        {userdata?.find((u) =&gt; post.userId === u.id)?.firstName?.charAt(0)}
+        {user?.username.charAt(0).toLocaleUpperCase()}
       &lt;/Avatar&gt;
     }
 &nbsp;
-    action={showDelete &amp;&amp; (<span class="branch-1 cbranch-no" title="branch not covered" >&lt;IconButton onClick={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >onDelete(post)}</span>&gt;&lt;DeleteIcon sx={{color:"whitesmoke"}}/&gt;&lt;/IconButton&gt;)</span>}
+    action={showDelete &amp;&amp; (&lt;IconButton onClick={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >onDelete(post)}</span>&gt;&lt;DeleteIcon sx={{color:"whitesmoke"}}/&gt;&lt;/IconButton&gt;)}
     title={&lt;Typography fontWeight="bold"&gt;{post.title}&lt;/Typography&gt;}
     subheader={&lt;Typography&gt;{post.views} views&lt;/Typography&gt;}
   /&gt;
@@ -246,25 +261,25 @@ return (
     &lt;CardActions&gt;
       &lt;IconButton
         onClick={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >handleLike(post)}</span>
-        sx={{ color: isLiked(post.id) ? <span class="branch-0 cbranch-no" title="branch not covered" >"black" </span>: "default" }}
+        sx={{ color: isLiked(post.id) ? "black" : "default" }}
       &gt;
         &lt;Stack&gt;
           &lt;ThumbUpIcon /&gt;
           &lt;Typography&gt;
-            {isLiked(post.id) ? <span class="branch-0 cbranch-no" title="branch not covered" >post.reactions.likes + 1 </span>: post.reactions.likes}
+            {isLiked(post.id) ? post.reactions.likes + 1 : post.reactions.likes}
           &lt;/Typography&gt;
         &lt;/Stack&gt;
       &lt;/IconButton&gt;
 &nbsp;
       &lt;IconButton
         onClick={<span class="fstat-no" title="function not covered" >() =</span>&gt; <span class="cstat-no" title="statement not covered" >handleDislike(post)}</span>
-        sx={{ color: isDisLiked(post.id) ? <span class="branch-0 cbranch-no" title="branch not covered" >"black" </span>: "default" }}
+        sx={{ color: isDisLiked(post.id) ? "black" : "default" }}
       &gt;
         &lt;Stack&gt;
           &lt;ThumbDownIcon /&gt;
           &lt;Typography&gt;
             {isDisLiked(post.id)
-              ? <span class="branch-0 cbranch-no" title="branch not covered" >post.reactions.dislikes + 1</span>
+              ? post.reactions.dislikes + 1
               : post.reactions.dislikes}
           &lt;/Typography&gt;
         &lt;/Stack&gt;
@@ -280,7 +295,7 @@ export default PostCard
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-25T00:33:26.247Z
+                at 2025-11-25T08:27:07.168Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

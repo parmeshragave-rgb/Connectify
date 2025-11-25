@@ -23,8 +23,8 @@ function UserProfile() {
   const id = params.id;
   const { likedPosts, dislikedPosts } = useSelector((s: RootState) => s.like);
 
-  const [userPosts, setuserPosts] = useState([]);
-  const [currentUser, setcurrentUser] = useState({});
+  const [userPosts, setuserPosts] = useState<Post[]>([]);
+  const [currentUser, setcurrentUser] = useState<usersdetails>({});
 
   const { user } = useSelector((s: RootState) => s.auth);
 
@@ -51,7 +51,7 @@ function UserProfile() {
       dislikes: number;
     };
   }
-  interface userdata {}
+ 
 
   const dispatch = useDispatch();
 
@@ -63,16 +63,40 @@ function UserProfile() {
     dispatch(dislikePost(post, user?.email));
   };
 
- const isLiked = (id: number) => likedPosts.some((p) => p.id === id && p.likedBy===user.email);
-  const isDisLiked = (id:number) => dislikedPosts.some((p) => p.id === id && p.dislikedBy===user.email)
+  const isLiked = (id: number) =>
+    likedPosts.some((p) => p.id === id && p.likedBy === user.email);
+  const isDisLiked = (id: number) =>
+    dislikedPosts.some((p) => p.id === id && p.dislikedBy === user.email);
 
   if (!userPosts || !currentUser) {
     return <CircularProgress sx={{ color: "black" }} />;
   }
 
-  const clickhandler = (id) => {
+  const clickhandler = (id:number) => {
     navigate(`/post/${id}`);
   };
+
+  interface usersdetails {
+    company: {
+      name: string;
+      title: string;
+    };
+    birthDate:string;
+    firstName: string,
+    lastName: string,
+    username:string,
+    image:''
+  }
+  interface Post {
+  id:number,
+  title:string,
+  body:string,
+  reactions:{
+        likes:number,
+        dislikes:number,
+
+  }
+}
 
   return (
     <>
@@ -89,7 +113,7 @@ function UserProfile() {
       <Box sx={{ p: 2 }}>
         <Grid container sx={{ width: "100%" }} spacing={1}>
           <Stack>
-            <Grid size={12} >
+            <Grid size={12}>
               <Stack direction={"row"} spacing={1}>
                 <Avatar
                   src={currentUser?.image}
@@ -123,7 +147,6 @@ function UserProfile() {
               Posts by {currentUser.firstName}
             </Typography>
 
-
             {userPosts.length === 0 && (
               <Box
                 sx={{
@@ -139,14 +162,16 @@ function UserProfile() {
             )}
 
             <Box
-              sx={{
-                // display: "flex",
-                // flexDirection: { xs: "column", md: "row" },
-                // mb: "20px",
-                // mr: "10px",
-                // justifyContent: "space-around",
-                // width: "800px",
-              }}
+              sx={
+                {
+                  display: "flex",
+                  flexDirection: { xs: "column" ,sm:"row", md: "row" },
+                  mb: "20px",
+                  mr: "10px",
+                  justifyContent: "space-around",
+                  width: "100%",
+                }
+              }
             >
               {userPosts.map((post) => (
                 <Grid
@@ -156,11 +181,10 @@ function UserProfile() {
                   display={"flex"}
                   sx={{
                     display: "flex",
-                    flexDirection: { xs: "column", md: "row" },
+                    // flexDirection: { xs: "column", md: "row" },
                     mb: "20px",
                     mr: "10px",
                     justifyContent: "space-around",
-                   
                   }}
                 >
                   <PostCard

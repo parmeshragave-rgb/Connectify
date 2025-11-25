@@ -3,7 +3,7 @@ import {
   DISLIKE_POST,
   likePost,
   dislikePost,
-} from "./LikedPostActions";
+} from "../Redux/LikedPost/LikedPostActions";
 
 describe("LikedPost Actions", () => {
   test("likePost returns correct object", () => {

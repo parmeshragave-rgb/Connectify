@@ -16,7 +16,7 @@ function Home() {
   const [limit, setLimit] = useState(10);
   const [skip, setSkip] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState<Post[]>([]);
 
 interface Post {
   id:number,
@@ -47,7 +47,7 @@ interface Post {
   }, [skip]);
 
   useEffect(() => {
-    if (loading == true) {
+    if (loading) {
       setLimit((prevPage) => prevPage + 10);
       setSkip((prevSkip) => prevSkip + 10);
     }
@@ -69,11 +69,11 @@ interface Post {
   };
 
   const handleDislike = (post:Post) => {
-    dispatch(dislikePost(post, user.email));
+    dispatch(dislikePost(post, user?.email));
   };
 
-  const isLiked = (id: number) => likedPosts.some((p) => p.id === id && p.likedBy===user.email);
-  const isDisLiked = (id:number) => dislikedPosts.some((p) => p.id === id && p.dislikedBy===user.email);
+  const isLiked = (id: number) => likedPosts.some((p) => p.id === id && p.likedBy===user?.email);
+  const isDisLiked = (id:number) => dislikedPosts.some((p) => p.id === id && p.dislikedBy===user?.email);
 
   const clickhandler = (id:number) => {
     navigate(`/post/${id}`);

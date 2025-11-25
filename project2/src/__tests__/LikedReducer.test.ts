@@ -5,7 +5,7 @@ const post1 = { id: 1, title: "Test Post" };
 const post2 = { id: 2, title: "Another Post" };
 
 describe("Like Reducer", () => {
-  test("should return initial state", () => {
+  test("return initial state", () => {
     const state = likeReducer(undefined, {});
     expect(state).toEqual({
       likedPosts: [],
