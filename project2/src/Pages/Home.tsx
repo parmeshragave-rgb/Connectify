@@ -72,8 +72,8 @@ interface Post {
     dispatch(dislikePost(post, user.email));
   };
 
-  const isLiked = (id: number) => likedPosts.some((p) => p.id === id);
-  const isDisLiked = (id:number) => dislikedPosts.some((p) => p.id === id);
+  const isLiked = (id: number) => likedPosts.some((p) => p.id === id && p.likedBy===user.email);
+  const isDisLiked = (id:number) => dislikedPosts.some((p) => p.id === id && p.dislikedBy===user.email);
 
   const clickhandler = (id:number) => {
     navigate(`/post/${id}`);

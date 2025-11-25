@@ -14,7 +14,7 @@ import { likePost, dislikePost } from "../Redux/LikedPost/LikedPostActions";
 
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PostCard from "../Components/ReusableCard";
 import type { RootState } from "../Redux";
 function UserProfile() {
@@ -25,7 +25,7 @@ function UserProfile() {
 
   const [userPosts, setuserPosts] = useState([]);
   const [currentUser, setcurrentUser] = useState({});
- 
+
   const { user } = useSelector((s: RootState) => s.auth);
 
   useEffect(() => {
@@ -42,31 +42,29 @@ function UserProfile() {
       .catch((error) => console.log(error.message));
   }, []);
 
-  
-
   interface Post {
-  id:number,
-  title:string,
-  body:string,
-  reactions:{
-        likes:number,
-        dislikes:number,
-
+    id: number;
+    title: string;
+    body: string;
+    reactions: {
+      likes: number;
+      dislikes: number;
+    };
   }
-}
+  interface userdata {}
+
   const dispatch = useDispatch();
 
-  const handleLike = (post:Post) => {
+  const handleLike = (post: Post) => {
     dispatch(likePost(post, user?.email));
   };
 
-  const handleDislike = (post:Post) => {
+  const handleDislike = (post: Post) => {
     dispatch(dislikePost(post, user?.email));
   };
 
-  const isLiked = (id: number) => likedPosts.some((p) => p.id === id);
-  const isDisLiked = (id:number) => dislikedPosts.some((p) => p.id === id);
-
+ const isLiked = (id: number) => likedPosts.some((p) => p.id === id && p.likedBy===user.email);
+  const isDisLiked = (id:number) => dislikedPosts.some((p) => p.id === id && p.dislikedBy===user.email)
 
   if (!userPosts || !currentUser) {
     return <CircularProgress sx={{ color: "black" }} />;
@@ -91,7 +89,7 @@ function UserProfile() {
       <Box sx={{ p: 2 }}>
         <Grid container sx={{ width: "100%" }} spacing={1}>
           <Stack>
-            <Grid size={12}>
+            <Grid size={12} >
               <Stack direction={"row"} spacing={1}>
                 <Avatar
                   src={currentUser?.image}
@@ -124,6 +122,8 @@ function UserProfile() {
             <Typography variant="h5" fontWeight={"bold"} gutterBottom>
               Posts by {currentUser.firstName}
             </Typography>
+
+
             {userPosts.length === 0 && (
               <Box
                 sx={{
@@ -140,14 +140,29 @@ function UserProfile() {
 
             <Box
               sx={{
-                display: "flex",
-                flexDirection: { xs: "column", md: "row" },
-                mb: "20px",
-                mr:"10px"
+                // display: "flex",
+                // flexDirection: { xs: "column", md: "row" },
+                // mb: "20px",
+                // mr: "10px",
+                // justifyContent: "space-around",
+                // width: "800px",
               }}
             >
               {userPosts.map((post) => (
-                <Grid key={post.id} xs={12} md={6} marginBottom={2} marginRight={2}>
+                <Grid
+                  key={post.id}
+                  xs={12}
+                  marginBottom={2}
+                  display={"flex"}
+                  sx={{
+                    display: "flex",
+                    flexDirection: { xs: "column", md: "row" },
+                    mb: "20px",
+                    mr: "10px",
+                    justifyContent: "space-around",
+                   
+                  }}
+                >
                   <PostCard
                     post={post}
                     userdata={[currentUser]}

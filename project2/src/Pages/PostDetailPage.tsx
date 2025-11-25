@@ -201,9 +201,11 @@ const isLiked = (id: number | undefined) => typeof id === "number" && likedPosts
                         </Avatar>
                       </Box>
                       <Stack sx={{ p: "1px" }}>
+                        <Box onClick={() => navigate("/profile")}>
                         <Typography sx={{ mt: "10px", fontWeight: "bold" }}>
                           @{comment.Username}
                         </Typography>
+                        </Box>
 
                         <Typography>{comment.query}</Typography>
 
@@ -243,10 +245,11 @@ const isLiked = (id: number | undefined) => typeof id === "number" && likedPosts
                         </Avatar>
                       </Box>
                       <Stack sx={{ p: "1px" }}>
+                        <Box onClick={() => navigate(`/userprofile/${comment.user.id}`) }>
                         <Typography sx={{ mt: "10px", fontWeight: "bold" }}>
                           @{comment.user.username}
                         </Typography>
-
+                        </Box>
                         <Typography>{comment.body}</Typography>
 
                         <Typography sx={{ mt: "2px" }}>

@@ -72,15 +72,26 @@ function Navbar() {
             <ListItemText primary="Login / Sign Up" />
           </ListItem>
         ) : (
+         
+          <>
           <ListItem
-            onClick={() => {
-              handleLogout();
-              setDrawerOpen(false);
-            }}
-            sx={{ cursor: "pointer" }}
-          >
-            <ListItemText primary="Logout" />
-          </ListItem>
+              onClick={() => {
+                navigate("/profile");
+                setDrawerOpen(false);
+              } }
+              sx={{ cursor: "pointer" }}
+            >
+              <ListItemText primary="Profile" />
+
+            </ListItem><ListItem
+              onClick={() => {
+                handleLogout();
+                setDrawerOpen(false);
+              } }
+              sx={{ cursor: "pointer" }}
+            >
+                <ListItemText primary="Logout" />
+              </ListItem></>
         )}
       </List>
     </Box>

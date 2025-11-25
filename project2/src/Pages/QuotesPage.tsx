@@ -9,16 +9,25 @@ import {
   Grid,
   Stack,
   Typography,
-  Box
+  Box,
+  CircularProgress
 } from "@mui/material";
-
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 function QuotesPage({ fetchQuerydata, quotesdata }) {
+  const navigate=useNavigate()
+  const { user } = useSelector((s: RootState) => s.auth);
+
   useEffect(() => {
     fetchQuerydata();
   }, []);
 
+  if (!user) {
+    navigate("/login");
+    return;
+  } 
   return quotesdata.loading ? (
-    <Typography>Loading</Typography>
+     <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>
   ) : quotesdata.error ? (
     <Typography>{quotesdata.error}</Typography>
   ) : (

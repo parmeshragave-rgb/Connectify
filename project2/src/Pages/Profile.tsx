@@ -1,61 +1,65 @@
 import { useEffect, useState } from "react";
-import {
-  Avatar,
-  Box,
-  Typography,
-  Button,
-  Stack,
-} from "@mui/material";
-import { useSelector } from "react-redux";
+import { Avatar, Box, Typography, Button, Stack } from "@mui/material";
+import { useSelector, useDispatch } from "react-redux";
 
 import PostCard from "../Components/ReusableCard";
 import AddPostForm from "../Components/AddPostForm";
 import type { RootState } from "../Redux";
+import { likePost, dislikePost } from "../Redux/LikedPost/LikedPostActions";
 
 const Profile = () => {
-    const { user } = useSelector((s: RootState) => s.auth);
-  
+  const { user } = useSelector((s: RootState) => s.auth);
+  const { likedPosts, dislikedPosts } = useSelector((s: RootState) => s.like);
+  const dispatch = useDispatch();
 
-  const STORAGE_KEY = `user_posts_${user?.email}`;
+  const handleLike = (post: Post) => {
+    dispatch(likePost(post, user?.email));
+  };
+
+  const handleDislike = (post: Post) => {
+    dispatch(dislikePost(post, user.email));
+  };
+
+  const isLiked = (id: number) => likedPosts.some((p) => p.id === id);
+  const isDisLiked = (id: number) => dislikedPosts.some((p) => p.id === id);
 
   interface Post {
-  id:number,
-  title:string,
-  body:string,
-  reactions:{
-        likes:number,
-        dislikes:number,
-
+    id: number;
+    title: string;
+    body: string;
+    reactions: {
+      likes: number;
+      dislikes: number;
+    };
   }
-}
 
   const [userPosts, setUserPosts] = useState<Post[]>([]);
   const [openAdd, setOpenAdd] = useState(false);
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    const item = localStorage.getItem(`user_posts_${user?.email}`);
+    const saved = item ? JSON.parse(item) : [];
     setUserPosts(saved);
   }, []);
 
-  
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(userPosts));
+    localStorage.setItem(
+      `user_posts_${user?.email}`,
+      JSON.stringify(userPosts)
+    );
   }, [userPosts]);
 
-  const handleDeletePost = (Post:Post) => {
-    let UpdateduserPosts=[...userPosts]
-    UpdateduserPosts=UpdateduserPosts.filter((f) => f.id !== Post.id)
-    setUserPosts(UpdateduserPosts)
+  const handleDeletePost = (Post: Post) => {
+    let UpdateduserPosts = [...userPosts];
+    UpdateduserPosts = UpdateduserPosts.filter((f) => f.id !== Post.id);
+    setUserPosts(UpdateduserPosts);
   };
 
-
-
-  const handleAddPost = (newPost:Post) => {
+  const handleAddPost = (newPost: Post) => {
     setUserPosts([newPost, ...userPosts]);
   };
 
   return (
     <Box sx={{ p: 3 }}>
-      
       <Stack alignItems="center" spacing={2}>
         <Avatar
           sx={{
@@ -74,12 +78,15 @@ const Profile = () => {
 
         <Typography variant="body1">{user?.email}</Typography>
 
-        <Button variant="contained" onClick={() => setOpenAdd(true)} sx={{bgcolor:"black",color:"white"}}>
+        <Button
+          variant="contained"
+          onClick={() => setOpenAdd(true)}
+          sx={{ bgcolor: "black", color: "white" }}
+        >
           Add Post
         </Button>
       </Stack>
 
-    
       <Box sx={{ mt: 4 }}>
         {userPosts.length === 0 ? (
           <Typography textAlign="center" mt={3} color="gray">
@@ -90,21 +97,23 @@ const Profile = () => {
             <PostCard
               key={post.id}
               post={post}
-              userdata={[{ id: Date.now(), image: "", firstName: user.username }]}
-              handleLike={() => {}}
-              handleDislike={() => {}}
-              isLiked={() => false}
-              isDisLiked={() => false}
+              userdata={[
+                { id: Date.now(), image: "", firstName: user.username },
+              ]}
+              handleLike={handleLike}
+              handleDislike={handleDislike}
+              isLiked={isLiked}
+              isDisLiked={isDisLiked}
               clickhandler={() => {}}
               navigate={() => {}}
               showDelete={true}
               onDelete={handleDeletePost}
+              user={user}
             />
           ))
         )}
       </Box>
 
-     
       <AddPostForm
         open={openAdd}
         onClose={() => setOpenAdd(false)}

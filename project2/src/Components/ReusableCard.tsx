@@ -2,11 +2,16 @@ import { Card,CardActions,CardHeader,Avatar,Typography,CardContent,IconButton,St
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useSelector } from "react-redux";
+import type { RootState } from "../Redux";
 const PostCard=( {post,userdata,handleLike,handleDislike,isLiked,isDisLiked,clickhandler,navigate,showDelete=false,onDelete=() => {}}) => {
+  
+
+  const {user} = useSelector((s:RootState) => s.auth)
 return (
 <Card
   sx={{
-    width: { xs: "350px", md: "400px" },
+    width: { xs: "350px", md: "380px" },
     height: "100%",
     display: "flex",
     flexDirection: "column",
@@ -26,7 +31,7 @@ return (
           )
         }
       >
-        {userdata?.find((u) => post.userId === u.id)?.firstName?.charAt(0)}
+        {user?.username.charAt(0).toLocaleUpperCase()}
       </Avatar>
     }
 

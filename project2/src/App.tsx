@@ -1,14 +1,26 @@
 import "./App.css";
+import { lazy,Suspense} from 'react';
+
 import Navbar from "./Components/Navbar";
-import Home from "./Pages/Home";
-import Login from "./Pages/Login";
-import PostDetailPage from "./Pages/PostDetailPage";
+
+
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import SearchUsers from "./Pages/SearchUsers";
-import UserProfile from "./Pages/UserProfile";
-import LikedPage from "./Pages/LikedPosts";
-import QuotesPage from "./Pages/QuotesPage";
-import Profile from "./Pages/Profile";
+const LazySearchUsers=lazy(() => import('./Pages/SearchUsers'))
+const LazyPostDetailPage=lazy(() => import('./Pages/PostDetailPage'))
+const LazyLikedPage =lazy(() => import('./Pages/LikedPosts'))
+const LazyQuotesPage =lazy(() => import('./Pages/QuotesPage'))
+const LazyProfile =lazy(() => import('./Pages/Profile'))
+const LazyUserProfile = lazy(() => import('./Pages/UserProfile'));
+const LazyLogin = lazy(() => import('./Pages/Login'));
+const LazyHome = lazy(() => import('./Pages/Home'));
+
+
+
+
+
+import { Box, CircularProgress } from "@mui/material";
+
 
 function App() {
   return (
@@ -16,18 +28,26 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="search" element={<SearchUsers />} />
-          <Route path="/post/:id" element={<PostDetailPage />} />
-          <Route path="/userprofile/:id" element={<UserProfile />} />
-          <Route path="liked" element={<LikedPage />} />
-          <Route path="quotes" element={<QuotesPage />} />
-          <Route path="profile" element={<Profile/>} />
-          <Route path="login" element={<Login />} />
+          <Route path="/" element={<Suspense fallback={
+            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><LazyHome/></Suspense>} />
+          <Route path="search" element={<Suspense fallback={
+            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><LazySearchUsers/></Suspense>} />
+          <Route path="/post/:id" element={<Suspense fallback={
+            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><LazyPostDetailPage/></Suspense>}  />
+          <Route path="/userprofile/:id" element={<Suspense fallback={
+            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><LazyUserProfile/></Suspense>} />
+          <Route path="liked" element={<Suspense fallback={
+            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><LazyLikedPage/></Suspense>}  />
+          <Route path="quotes" element={<Suspense fallback={
+            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><LazyQuotesPage/></Suspense>}/>
+          <Route path="profile" element={<Suspense fallback={
+            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><LazyProfile/></Suspense>} />
+          <Route path="login" element={<Suspense fallback={
+            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><LazyLogin/></Suspense>}  />
         </Routes>
       </Router>
     </>
-  );
+  )
 }
 
 export default App;

@@ -54,6 +54,10 @@ const AddPostForm = ({ open, onClose, onSubmit }) => {
           <Button variant="contained" onClick={handleSubmit} sx={{bgcolor:"black",color:"whitesmoke"}}>
             Add Post
           </Button>
+
+          <Button variant="outlined" onClick={onClose} sx={{bgcolor:"black",color:"whitesmoke"}}>
+            Cancel
+          </Button>
         </Stack>
       </DialogContent>
     </Dialog>
