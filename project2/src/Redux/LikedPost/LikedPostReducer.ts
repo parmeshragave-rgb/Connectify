@@ -1,4 +1,4 @@
-import {LIKE_POST, DISLIKE_POST,REMOVE_POST, likePost} from "./LikedPostActions";
+import {LIKE_POST, DISLIKE_POST} from "./LikedPostActions";
 export interface Post {
   id: number;
   [key: string]: any;
@@ -33,15 +33,6 @@ const likeReducer = (state = initialState, action): LikesState => {
           : [...state.dislikedPosts, {...action.payload,dislikedBy:action.userEmail}],
         likedPosts: state.likedPosts.filter(p => p.id !== action.payload.id),
       };
-   
-      case REMOVE_POST:
-        return{
-          ...state,
-          likedPosts:state.likedPosts.filter((p) => p.id !== action.payload.id),
-        dislikedPosts: state.dislikedPosts.filter(p => p.id !== action.payload.id),
-
-        }
-   
 
     default:
       return state;

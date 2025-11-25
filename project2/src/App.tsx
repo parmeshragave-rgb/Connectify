@@ -8,6 +8,7 @@ import SearchUsers from "./Pages/SearchUsers";
 import UserProfile from "./Pages/UserProfile";
 import LikedPage from "./Pages/LikedPosts";
 import QuotesPage from "./Pages/QuotesPage";
+import Profile from "./Pages/Profile";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/userprofile/:id" element={<UserProfile />} />
           <Route path="liked" element={<LikedPage />} />
           <Route path="quotes" element={<QuotesPage />} />
+          <Route path="profile" element={<Profile/>} />
           <Route path="login" element={<Login />} />
         </Routes>
       </Router>

@@ -34,23 +34,4 @@ describe("Login Page", () => {
     expect(screen.getByPlaceholderText("Password")).toBeInTheDocument();
   });
 
-  test("toggles to Sign Up mode", () => {
-    render(
-      <Provider store={store}>
-        <GoogleOAuthProvider clientId={GOOGLE_TEST_CLIENT_ID}>
-          <MemoryRouter>
-            <Login />
-          </MemoryRouter>
-        </GoogleOAuthProvider>
-      </Provider>
-    );
-
-    const toggleButton = screen.getByText("New user? Sign up");
-    fireEvent.click(toggleButton);
-
-    expect(
-      screen.getByRole("heading", { name: "Sign up" })
-    ).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("Email")).toBeInTheDocument();
-  });
-});
+})

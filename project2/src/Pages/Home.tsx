@@ -18,6 +18,16 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
 
+interface Post {
+  id:number,
+  title:string,
+  body:string,
+  reactions:{
+        likes:number,
+        dislikes:number,
+
+  }
+}
   const fetchPost = () => {
     axios
       .get(`https://dummyjson.com/posts/?limit=${limit}&skip=${skip}`)
@@ -54,18 +64,18 @@ function Home() {
 
   window.addEventListener("scroll", handleScroll);
 
-  const handleLike = (post) => {
+  const handleLike = (post:Post) => {
     dispatch(likePost(post, user?.email));
   };
 
-  const handleDislike = (post) => {
+  const handleDislike = (post:Post) => {
     dispatch(dislikePost(post, user.email));
   };
 
-  const isLiked = (id) => likedPosts.some((p) => p.id === id);
-  const isDisLiked = (id) => dislikedPosts.some((p) => p.id === id);
+  const isLiked = (id: number) => likedPosts.some((p) => p.id === id);
+  const isDisLiked = (id:number) => dislikedPosts.some((p) => p.id === id);
 
-  const clickhandler = (id) => {
+  const clickhandler = (id:number) => {
     navigate(`/post/${id}`);
   };
 
@@ -111,4 +121,4 @@ function Home() {
 
 export default Home;
 
-//  {post,userdata,handleLike,handleDislike,isLiked,isDisLiked,clickhandler,navigate}
+

@@ -1,95 +1,101 @@
-
 import { render, screen, fireEvent } from "@testing-library/react";
 import LikedPage from "../Pages/LikedPosts";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
-import { MemoryRouter } from "react-router-dom";
+import thunk from "redux-thunk";
+import { BrowserRouter } from "react-router-dom";
+import { likePost } from "../Redux/LikedPost/LikedPostActions";
 
-const mockStore = configureStore([]);
-const mockNavigate = jest.fn();
-
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useNavigate: () => mockNavigate,
+jest.mock("../Redux/LikedPost/LikedPostActions", () => ({
+  likePost: jest.fn(() => ({ type: "LIKE_POST" })),
 }));
-
-
 jest.mock("../Redux/Users/userActions", () => ({
-  fetchUsersData: () => ({ type: "FETCH_USERS" }),
+  fetchUsersData: jest.fn(() => ({ type: "FETCH_USERS" })),
 }));
+
+const mockStore = configureStore([thunk]);
 
 describe("LikedPage Component", () => {
-  beforeEach(() => {
-    localStorage.clear();
-  });
+  const renderLiked = (store) =>
+    render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <LikedPage />
+        </BrowserRouter>
+      </Provider>
+    );
 
-  test("renders 'No liked posts yet' when no posts", () => {
+  test("shows 'No liked posts yet.' when empty", () => {
     const store = mockStore({
-      auth: { user: { email: "demo@gmail.com" } },
+      like: { likedPosts: [] },
+      auth: { user: { email: "parmesh@gmail.com" } },
       users: { userdata: [] },
     });
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <LikedPage />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderLiked(store);
 
     expect(screen.getByText("No liked posts yet.")).toBeInTheDocument();
   });
 
-  test("renders liked posts from localStorage", () => {
-    localStorage.setItem(
-      "likedPostsdemo@gmail.com",
-      JSON.stringify([
-        { id: 1, title: "Post Title", body: "Post body", views: 10, userId: 5 },
-      ])
-    );
-
+  test("renders liked posts", () => {
     const store = mockStore({
-      auth: { user: { email: "demo@gmail.com" } },
-      users: { userdata: [{ id: 5, image: "" }] },
+      like: {
+        likedPosts: [
+          {
+            id: 1,
+            title: "Test Post",
+            body: "Post Body",
+            views: 20,
+            likedBy: "parmesh@gmail.com",
+            userId: 10,
+          },
+        ],
+      },
+      auth: { user: { email: "parmesh@gmail.com" } },
+      users: { userdata: [{ id: 10, image: "" }] },
     });
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <LikedPage />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderLiked(store);
 
-    expect(screen.getByText("Post Title")).toBeInTheDocument();
-    expect(screen.getByText("Post body")).toBeInTheDocument();
+    expect(screen.getByText("Test Post")).toBeInTheDocument();
+    expect(screen.getByText("Post Body")).toBeInTheDocument();
   });
 
-  test("removes a liked post when clicking remove button", () => {
-    localStorage.setItem(
-      "likedPostsdemo@gmail.com",
-      JSON.stringify([
-        { id: 1, title: "Post Title", body: "Post body", views: 10, userId: 5 },
-      ])
-    );
-
+  test("clicking Remove dispatches likePost", () => {
     const store = mockStore({
-      auth: { user: { email: "demo@gmail.com" } },
-      users: { userdata: [{ id: 5, image: "" }] },
+      like: {
+        likedPosts: [
+          {
+            id: 1,
+            title: "Test Post",
+            body: "Post Body",
+            likedBy: "parmesh@gmail.com",
+            userId: 10,
+          },
+        ],
+      },
+      auth: { user: { email: "parmesh@gmail.com" } },
+      users: { userdata: [{ id: 10, image: "" }] },
     });
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <LikedPage />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderLiked(store);
 
-    fireEvent.click(screen.getByText("Remove"));
+    const removeBtn = screen.getByText("Remove");
+    fireEvent.click(removeBtn);
 
-    expect(
-      screen.getByText("No liked posts yet.")
-    ).toBeInTheDocument();
+    expect(likePost).toHaveBeenCalledTimes(1);
+  });
+
+  test("fetchUsersData should be dispatched on mount", () => {
+    const store = mockStore({
+      like: { likedPosts: [] },
+      auth: { user: { email: "parmesh@gmail.com" } },
+      users: { userdata: [] },
+    });
+
+    renderLiked(store);
+
+    const actions = store.getActions();
+    expect(actions.some((a) => a.type === "FETCH_USERS")).toBe(true);
   });
 });

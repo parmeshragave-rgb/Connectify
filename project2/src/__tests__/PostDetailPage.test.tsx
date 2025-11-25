@@ -1,83 +1,130 @@
-
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import PostDetailPage from "../Pages/PostDetailPage";
-import axios from "axios";
-import configureStore from "redux-mock-store";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import configureStore from "redux-mock-store";
+import {thunk} from "redux-thunk";
+import axios from "axios";
+import { BrowserRouter } from "react-router-dom";
+import { likePost, dislikePost } from "../Redux/LikedPost/LikedPostActions";
 
 jest.mock("axios");
-const mockStore = configureStore([]);
 
-const mockNavigate = jest.fn();
-
-jest.mock("react-router-dom", () => ({
-  ...jest.requireActual("react-router-dom"),
-  useNavigate: () => mockNavigate
+jest.mock("../Redux/LikedPost/LikedPostActions", () => ({
+  likePost: jest.fn(() => ({ type: "LIKE_POST" })),
+  dislikePost: jest.fn(() => ({ type: "DISLIKE_POST" })),
 }));
 
-describe("PostDetailPage Component", () => {
-  test("renders post & comments from mocked axios", async () => {
-    const store = mockStore({
-      auth: {
-        user: { email: "test@mail.com", username: "tester" }
-      }
-    });
+const mockStore = configureStore([thunk]);
 
-    
-    axios.get.mockResolvedValueOnce({
-      data: {
-        id: 1,
-        title: "Mock Post Title",
-        body: "Mock post content",
-        reactions: { likes: 5, dislikes: 2 }
-      }
-    });
+const renderWithStore = (store, id = "1") =>
+  render(
+    <Provider store={store}>
+      <BrowserRouter>
+        <PostDetailPage />
+      </BrowserRouter>
+    </Provider>
+  );
 
- 
-    axios.get.mockResolvedValueOnce({
-      data: {
-        comments: [
-          {
-            id: 10,
-            body: "Awesome post!",
-            likes: 3,
-            user: {
-              id: 77,
-              fullName: "John Doe",
-              username: "john"
+describe("PostDetailPage Test", () => {
+  beforeEach(() => {
+    axios.get.mockReset();
+  });
+
+  test("renders post and comments", async () => {
+    axios.get
+      .mockResolvedValueOnce({
+        data: { id: 1, title: "Test Post", body: "Post Body", reactions: { likes: 5, dislikes: 2 } }
+      })
+      .mockResolvedValueOnce({
+        data: {
+          comments: [
+            {
+              id: 1,
+              body: "Backend comment",
+              likes: 3,
+              user: { id: 10, username: "john", fullName: "John Doe" }
             }
-          }
-        ]
-      }
+          ]
+        }
+      });
+
+    const store = mockStore({
+      like: { likedPosts: [], dislikedPosts: [] },
+      auth: { user: { email: "test@gmail.com", username: "tester" } },
     });
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/post/1"]}>
-          <Routes>
-            <Route path="/post/:id" element={<PostDetailPage />} />
-          </Routes>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithStore(store);
 
    
-    expect(await screen.findByText("Mock Post Title")).toBeInTheDocument();
+    expect(await screen.findByText("Test Post")).toBeInTheDocument();
+    expect(screen.getByText("Post Body")).toBeInTheDocument();
 
-   
-    expect(screen.getByText("Mock post content")).toBeInTheDocument();
+    expect(await screen.findByText("Backend comment")).toBeInTheDocument();
+  });
 
-    
-    expect(screen.getByText("Add Comments")).toBeInTheDocument();
-    expect(screen.getByRole("button" ,{name:"Add Comment"})).toBeInTheDocument();
-    expect(screen.getByRole("button" ,{name:/back/i})).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button" ,{name:/back/i}))
-    expect(mockNavigate).toHaveBeenCalledWith(-1);
-    
+  test("like button calls likePost", async () => {
+    axios.get.mockResolvedValueOnce({
+      data: { id: 1, title: "Test Post", body: "Post Body", reactions: { likes: 5, dislikes: 2 } }
+    });
 
+    axios.get.mockResolvedValueOnce({ data: { comments: [] } });
 
-    expect(await screen.findByText("@john")).toBeInTheDocument();
-    expect(screen.getByText("Awesome post!")).toBeInTheDocument();
+    const store = mockStore({
+      like: { likedPosts: [], dislikedPosts: [] },
+      auth: { user: { email: "test@gmail.com", username: "tester" } },
+    });
+
+    renderWithStore(store);
+
+    const likeBtn = await screen.findByRole("button", { name: "" });
+    fireEvent.click(likeBtn);
+
+    expect(likePost).toHaveBeenCalledTimes(1);
+  });
+
+  test("dislike button calls dislikePost", async () => {
+    axios.get.mockResolvedValueOnce({
+      data: { id: 1, title: "Test Post", body: "Post Body", reactions: { likes: 5, dislikes: 2 } }
+    });
+
+    axios.get.mockResolvedValueOnce({ data: { comments: [] } });
+
+    const store = mockStore({
+      like: { likedPosts: [], dislikedPosts:[] },
+      auth: { user: { email: "test@gmail.com", username: "tester" } },
+    });
+
+    renderWithStore(store);
+
+    const buttons = await screen.findAllByRole("button");
+    const dislikeBtn = buttons[1];
+
+    fireEvent.click(dislikeBtn);
+
+    expect(dislikePost).toHaveBeenCalledTimes(1);
+  });
+
+  test("add comment works", async () => {
+    axios.get.mockResolvedValueOnce({
+      data: { id: 1, title: "Test Post", body: "Post Body", reactions: { likes: 5, dislikes: 2 } }
+    });
+
+    axios.get.mockResolvedValueOnce({ data: { comments: [] } });
+
+    const store = mockStore({
+      like: { likedPosts: [], dislikedPosts: [] },
+      auth: { user: { email: "test@gmail.com", username: "tester" } },
+    });
+
+    renderWithStore(store);
+
+    const input = await screen.findByPlaceholderText("Add comment");
+    fireEvent.change(input, { target: { value: "Nice post!" } });
+
+    const addBtn = screen.getByText("Add Comment");
+    fireEvent.click(addBtn);
+
+    expect(screen.getByText("@tester")).toBeInTheDocument();
+    expect(screen.getByText("Nice post!")).toBeInTheDocument();
   });
 });

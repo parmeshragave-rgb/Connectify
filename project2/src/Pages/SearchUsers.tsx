@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-
+import type { RootState } from "../Redux";
 
 import axios from "axios";
 function SearchUsers() {
@@ -20,24 +20,32 @@ function SearchUsers() {
   const [loading, setLoading] = useState(false);
   const [query, setQuery] = useState("");
   const [usersdata, setUsersdata] = useState([]);
+  const [debouncequery, setDebounceQuery] = useState("");
+
   const navigate = useNavigate();
   
 
   const { user } = useSelector((s: RootState) => s.auth);
 
   useEffect(() => {
+    const url=debouncequery.trim() ===""
+    ? `https://dummyjson.com/users/?limit=${limit}&skip=${skip}`
+    :   `https://dummyjson.com/users/&search?q=${debouncequery}`
     axios
-      .get(
-        `https://dummyjson.com/users/?limit=${limit}&skip=${skip}&search?q=${query}`
-      )
-
+      .get(url)
       .then((res) => {
         setUsersdata((prevData) => [...prevData, ...res.data.users]);
         setLoading(false);
       })
 
       .catch((error) => console.log(error.message));
-  }, [query, skip]);
+  }, [debouncequery, skip]);
+
+  useEffect(() => {
+     const timer=setTimeout(() => {
+      setDebounceQuery(query)
+     },800)
+  },[query])
 
   useEffect(() => {
     if (loading == true) {
@@ -61,7 +69,6 @@ function SearchUsers() {
     navigate(`/userprofile/${id}`);
   };
 
-  // const handleSearch=(value) => {debounce((value) =>{setdebounceQuery(value)},800)}
 
   if (!user) {
     navigate("/login");

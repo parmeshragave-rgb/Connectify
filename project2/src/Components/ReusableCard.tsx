@@ -1,8 +1,8 @@
 import { Card,CardActions,CardHeader,Avatar,Typography,CardContent,IconButton,Stack } from "@mui/material";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
-
-const PostCard=( {post,userdata,handleLike,handleDislike,isLiked,isDisLiked,clickhandler,navigate}) => {
+import DeleteIcon from '@mui/icons-material/Delete';
+const PostCard=( {post,userdata,handleLike,handleDislike,isLiked,isDisLiked,clickhandler,navigate,showDelete=false,onDelete=() => {}}) => {
 return (
 <Card
   sx={{
@@ -29,6 +29,8 @@ return (
         {userdata?.find((u) => post.userId === u.id)?.firstName?.charAt(0)}
       </Avatar>
     }
+
+    action={showDelete && (<IconButton onClick={() => onDelete(post)}><DeleteIcon sx={{color:"whitesmoke"}}/></IconButton>)}
     title={<Typography fontWeight="bold">{post.title}</Typography>}
     subheader={<Typography>{post.views} views</Typography>}
   />

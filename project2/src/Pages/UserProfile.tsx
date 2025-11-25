@@ -1,36 +1,32 @@
-
 import { useState, useEffect } from "react";
 import axios from "axios";
 import {
-  CardContent,
   Grid,
-  Card,
-  CardHeader,
   Typography,
-  CardActions,
   Stack,
-  IconButton,
   Avatar,
   Box,
   Divider,
   CircularProgress,
   Button,
 } from "@mui/material";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import { likePost, dislikePost } from "../Redux/LikedPost/LikedPostActions";
+
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import PostCard from "../Components/ReusableCard";
+import type { RootState } from "../Redux";
 function UserProfile() {
   const navigate = useNavigate();
   const params = useParams();
   const id = params.id;
+  const { likedPosts, dislikedPosts } = useSelector((s: RootState) => s.like);
+
   const [userPosts, setuserPosts] = useState([]);
   const [currentUser, setcurrentUser] = useState({});
-  const [likes, setLikes] = useState([]);
-  const [disLikes, setdisLikes] = useState([]);
-  const { user} = useSelector((s: RootState) => s.auth);
+ 
+  const { user } = useSelector((s: RootState) => s.auth);
 
   useEffect(() => {
     axios
@@ -46,68 +42,31 @@ function UserProfile() {
       .catch((error) => console.log(error.message));
   }, []);
 
-  useEffect(() => {
-    const saved = localStorage.getItem(`likedPosts${user.email}`);
-    if (saved) {
-      setLikes(JSON.parse(saved));
-    }
-  }, []);
+  
 
-  useEffect(() => {
-    const saved = localStorage.getItem(`dislikedPosts${user.email}`);
-    if (saved) {
-      setdisLikes(JSON.parse(saved));
-    }
-  }, []);
+  interface Post {
+  id:number,
+  title:string,
+  body:string,
+  reactions:{
+        likes:number,
+        dislikes:number,
 
-  const handleLike = (post) => {
-    let updatedLikes = [...likes];
-    let updatedDisLikes = [...disLikes];
+  }
+}
+  const dispatch = useDispatch();
 
-    if (updatedLikes.some((p) => p.id === post.id)) {
-      updatedLikes = updatedLikes.filter((p) => p.id !== post.id);
-    } else {
-      updatedLikes.push(post);
-      updatedDisLikes = updatedDisLikes.filter((p) => p.id !== post.id);
-      setdisLikes(updatedDisLikes);
-      localStorage.setItem(
-        `dislikedPosts${user.email}`,
-        JSON.stringify(updatedDisLikes)
-      );
-    }
-
-    setLikes(updatedLikes);
-    localStorage.setItem(
-      `likedPosts${user.email}`,
-      JSON.stringify(updatedLikes)
-    );
+  const handleLike = (post:Post) => {
+    dispatch(likePost(post, user?.email));
   };
 
-  const handleDislike = (post) => {
-    let updatedDisLikes = [...disLikes];
-    let updatedLikes = [...likes];
-
-    if (updatedDisLikes.some((p) => p.id === post.id)) {
-      updatedDisLikes = updatedDisLikes.filter((p) => p.id !== post.id);
-    } else {
-      updatedDisLikes.push(post);
-      updatedLikes = updatedLikes.filter((p) => p.id !== post.id);
-      setLikes(updatedLikes);
-      localStorage.setItem(
-        `likedPosts${user.email}`,
-        JSON.stringify(updatedLikes)
-      );
-    }
-
-    setdisLikes(updatedDisLikes);
-    localStorage.setItem(
-      `dislikedPosts${user.email}`,
-      JSON.stringify(updatedDisLikes)
-    );
+  const handleDislike = (post:Post) => {
+    dispatch(dislikePost(post, user?.email));
   };
 
-  const isLiked = (id) => likes.some((p) => p.id === id);
-  const isDisLiked = (id) => disLikes.some((p) => p.id === id);
+  const isLiked = (id: number) => likedPosts.some((p) => p.id === id);
+  const isDisLiked = (id:number) => dislikedPosts.some((p) => p.id === id);
+
 
   if (!userPosts || !currentUser) {
     return <CircularProgress sx={{ color: "black" }} />;
@@ -165,16 +124,41 @@ function UserProfile() {
             <Typography variant="h5" fontWeight={"bold"} gutterBottom>
               Posts by {currentUser.firstName}
             </Typography>
-            {userPosts.length===0 && <Box sx={{display:"flex",justifyContent:"center",color:"lightgray",alignItems:"center" ,height:"100%"}}><Typography variant="h5">No Posts Yet</Typography></Box>}
-            
+            {userPosts.length === 0 && (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  color: "lightgray",
+                  alignItems: "center",
+                  height: "100%",
+                }}
+              >
+                <Typography variant="h5">No Posts Yet</Typography>
+              </Box>
+            )}
 
-            <Box sx={{ display: "flex", flexDirection: {xs:"column",md:"row"},mb:"20px" }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", md: "row" },
+                mb: "20px",
+                mr:"10px"
+              }}
+            >
               {userPosts.map((post) => (
-                <Grid key={post.id} xs={12} md={6} marginBottom={2}>
-             <PostCard post={post} userdata={[currentUser]} handleLike={handleLike} handleDislike={handleDislike} isLiked={isLiked} isDisLiked={isDisLiked} clickhandler={clickhandler} navigate={navigate} />
-                  
+                <Grid key={post.id} xs={12} md={6} marginBottom={2} marginRight={2}>
+                  <PostCard
+                    post={post}
+                    userdata={[currentUser]}
+                    handleLike={handleLike}
+                    handleDislike={handleDislike}
+                    isLiked={isLiked}
+                    isDisLiked={isDisLiked}
+                    clickhandler={clickhandler}
+                    navigate={navigate}
+                  />
                 </Grid>
-                
               ))}
             </Box>
           </Stack>
@@ -185,6 +169,3 @@ function UserProfile() {
 }
 
 export default UserProfile;
-
-
-

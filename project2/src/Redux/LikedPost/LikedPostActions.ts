@@ -1,6 +1,6 @@
 export const LIKE_POST = "LIKE_POST";
 export const DISLIKE_POST = "DISLIKE_POST";
-export const REMOVE_POST="REMOVE_POST"
+
 
 
 export interface LikedPosts{
@@ -10,11 +10,6 @@ export interface LikedPosts{
 
 export interface DisLikedPosts{
     type:typeof DISLIKE_POST;
-    payload:any []
-}
-
-export interface RemovePosts{
-    type:typeof REMOVE_POST;
     payload:any []
 }
 
@@ -30,8 +25,4 @@ export const dislikePost = (post,userEmail) => ({
   userEmail
 });
 
-export const removePost = (post,userEmail) => ({
-  type: DISLIKE_POST,
-  payload: post,
-  userEmail
-});
+

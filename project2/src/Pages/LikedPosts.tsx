@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector ,useDispatch} from "react-redux";
 import type { RootState } from "../Redux";
 import { fetchUsersData } from "../Redux/Users/userActions";
-import { removePost } from "../Redux/LikedPost/LikedPostActions";
+import { likePost } from "../Redux/LikedPost/LikedPostActions";
 
 function LikedPage() {
   const { likedPosts} = useSelector((s: RootState) => s.like);
@@ -25,7 +25,7 @@ function LikedPage() {
   const userLikedPosts=likedPosts.filter(p => p.likedBy === user.email)
 
   const removePosthandler = (post) => {
-    dispatch(removePost(post,user?.email));
+    dispatch(likePost(post,user?.email));
 
     
   };

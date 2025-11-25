@@ -7,7 +7,7 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import { likePost,dislikePost } from "../Redux/LikedPost/LikedPostActions";
-
+import type { RootState } from "../Redux";
 import {
   Stack,
   Box,
@@ -24,9 +24,9 @@ import {
 
 function PostDetailPage() {
   const { user} = useSelector((s: RootState) => s.auth);
-  const [post, setpost] = useState({});
-  const [comments, setComments] = useState([]);
-  const [userComment, setUserComment] = useState([]);
+  const [post, setpost] = useState<Post>({} as Post);
+  const [comments, setComments] = useState<any[]>([]);
+  const [userComment, setUserComment] = useState<AddComment[]>([]);
   const [commentQuery, setcommentQuery] = useState("");
   const params = useParams();
   const id = params.id;
@@ -58,6 +58,17 @@ useEffect(() => {
   }, []);
 
 
+interface Post {
+  id:number,
+  title:string,
+  body:string,
+  reactions:{
+        likes:number,
+        dislikes:number,
+
+  }
+}
+
 interface AddComment {
   Username?: string;
   query?: string;
@@ -68,7 +79,7 @@ const currentComment:AddComment={
   query:commentQuery
 }
 
-const AddComments = (currentComment) => {
+const AddComments = (currentComment: AddComment) => {
   if(!currentComment.query?.trim()) return;
     let UpdatedComments=[...userComment]
     UpdatedComments.push(currentComment)
@@ -78,18 +89,18 @@ const AddComments = (currentComment) => {
 
 }
 
-  const handleLikes = (post) => {
+  const handleLikes = (post :Post) => {
     dispatch(likePost(post,user?.email))
   };
 
-  const handleDisLikes = (post) => {
+
+
+  const handleDisLikes = (post:Post) => {
    dispatch(dislikePost(post,user?.email))
   };
 
-const isLiked = (id) => likedPosts.some((p) => p.id === id);
-  const isDisLiked = (id) => dislikedPosts.some((p) => p.id === id);
-//  const isLiked = (id) => likedPosts.some((p) => p.id === id && p.likedby ===user.email);
-//   const isDisLiked = (id) => dislikedPosts.some((p) => p.id === id && p.dislikedby === user.email);
+const isLiked = (id: number | undefined) => typeof id === "number" && likedPosts.some((p) => p.id === id);
+  const isDisLiked = (id: number | undefined) => typeof id === "number" && dislikedPosts.some((p) => p.id === id);
 
 
   return (

@@ -22,7 +22,7 @@ function Navbar() {
   const handleLogout = () => {
     dispatch(logout());
     handleClose();
-    navigate("/");
+    navigate("/login");
   };
 
   const drawer = (
@@ -134,6 +134,7 @@ function Navbar() {
                   sx={{zIndex:2000}}
                 >
                   <MenuItem disabled>{user?.username}</MenuItem>
+                  <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </Menu>
               </>
