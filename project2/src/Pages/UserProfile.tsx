@@ -98,6 +98,14 @@ function UserProfile() {
   }
 }
 
+
+const reverseString =(str) => {
+   const charArry=str.split('-')
+   const reversedArray=charArry.reverse();
+    const reversedStr = reversedArray.join('-');
+    return reversedStr
+
+}
   return (
     <>
       <Box sx={{ ml: "16px" }}>
@@ -128,7 +136,7 @@ function UserProfile() {
                   {currentUser.username}
                 </Typography>
                 <Typography variant="body1" fontWeight={"bold"}>
-                  Born at {currentUser.birthDate}
+                  Born at {reverseString(currentUser?.birthDate || "null")}
                 </Typography>
                 <Typography
                   variant="subtitle1"

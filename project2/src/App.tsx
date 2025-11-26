@@ -10,12 +10,7 @@ const LazyProfile =lazy(() => import('./Pages/Profile'))
 const LazyUserProfile = lazy(() => import('./Pages/UserProfile'));
 const LazyLogin = lazy(() => import('./Pages/Login'));
 const LazyHome = lazy(() => import('./Pages/Home'));
-
-
-
-
-
-import { Box, CircularProgress } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 
 
 function App() {
@@ -40,6 +35,7 @@ function App() {
             <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><LazyProfile/></Suspense>} />
           <Route path="login" element={<Suspense fallback={
             <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><LazyLogin/></Suspense>}  />
+            <Route path="*" element={<Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><Typography variant="h6">No Match Found</Typography></Box>}></Route>
         </Routes>
       </Router>
     </>

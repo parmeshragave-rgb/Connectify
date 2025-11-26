@@ -13,7 +13,7 @@ const initialState: AuthState = {
   isAuthenticated: false,
 };
 
-export default function authReducer(state: AuthState = initialState,action: AuthAction
+export default function authReducer(state= initialState,action: AuthAction
 ): AuthState {
   switch (action.type) {
     case LOGIN_SUCCESS:

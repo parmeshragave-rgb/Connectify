@@ -97,7 +97,7 @@ export default function Login() {
     else handleSignup();
   };
 
-  const handleGoogleSuccess = (res: any) => {
+  const handleGoogleSuccess = (res) => {
     const token = res.credential;
     const decoded: DecodedToken = jwtDecode(token);
 
