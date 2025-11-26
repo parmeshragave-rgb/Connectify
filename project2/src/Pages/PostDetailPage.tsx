@@ -142,7 +142,7 @@ const isLiked = (id: number | undefined) => typeof id === "number" && likedPosts
 
               <Stack direction={"row"} spacing={2}>
                 <Stack>
-                  <IconButton onClick={() =>{handleLikes(post)}} sx={{color:isLiked(post.id) ? "black" : "default"}}>
+                  <IconButton onClick={() =>{handleLikes(post)}} sx={{color:isLiked(post.id) ? "black" : "default"}}  data-testid="likeButton">
                   <ThumbUpIcon />
                     </IconButton  >         
                   <Typography variant="h6" fontWeight={"bold"}>
@@ -150,7 +150,7 @@ const isLiked = (id: number | undefined) => typeof id === "number" && likedPosts
                   </Typography>
                 </Stack>
                 <Stack>
-                  <IconButton onClick={() =>{handleDisLikes(post)}} sx={{color:isDisLiked(post.id) ? "black" : "default" }}>
+                  <IconButton onClick={() =>{handleDisLikes(post)}} sx={{color:isDisLiked(post.id) ? "black" : "default" }}  data-testid="dislikeButton">
                   <ThumbDownIcon/>
                   </IconButton>
                   <Typography variant="h6" fontWeight={"bold"}>
@@ -209,12 +209,12 @@ const isLiked = (id: number | undefined) => typeof id === "number" && likedPosts
                   >
                     <Stack direction={"row"} spacing={2}>
                       <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <Avatar sx={{ bgcolor: "black", mt: "10px",fontWeight:"bold" }}>
+                        <Avatar sx={{ bgcolor: "black", mt: "10px",fontWeight:"bold" }} data-testid="avatarlocal">
                           {comment?.Username?.charAt(0).toUpperCase()}
                         </Avatar>
                       </Box>
                       <Stack sx={{ p: "1px" }}>
-                        <Box onClick={() => navigate("/profile")}>
+                        <Box onClick={() => navigate("/profile")} data-testid="usernamelocal">
                         <Typography sx={{ mt: "10px", fontWeight: "bold" }}>
                           @{comment.Username}
                         </Typography>
@@ -253,6 +253,7 @@ const isLiked = (id: number | undefined) => typeof id === "number" && likedPosts
                           onClick={() =>
                             navigate(`/userprofile/${comment.user.id}`)
                           }
+                          data-testid="avatar"
                         >
                           {comment.user.fullName.charAt(0).toUpperCase()}
                         </Avatar>

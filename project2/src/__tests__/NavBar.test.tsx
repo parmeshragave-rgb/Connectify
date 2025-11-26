@@ -72,7 +72,7 @@ describe("Navbar Component", () => {
     );
 
    
-    fireEvent.click(screen.getByText(/j/i));
+    fireEvent.click(screen.getAllByText(/j/i)[0]);
 
     const HomeBtn = screen.getByText(/Home/i);
     fireEvent.click(HomeBtn);
@@ -95,6 +95,32 @@ describe("Navbar Component", () => {
     fireEvent.click(logoutBtn);
 
     expect(store.getActions()).toContainEqual({ type: "LOGOUT" });
-    expect(mockNavigate).toHaveBeenCalledWith("/");
+    expect(mockNavigate).toHaveBeenCalledWith("/login");
+
+  
+    fireEvent.click(screen.getAllByText(/j/i)[0]);
+    const profileMenu = screen.getByText(/Profile/i);
+    fireEvent.click(profileMenu);
+    expect(mockNavigate).toHaveBeenCalledWith('/profile');
+  });
+
+  test('drawer routes when unauthenticated', () => {
+    const store = mockStore({ auth: { isAuthenticated: false, user: null } });
+
+    const { container } = render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <Navbar />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const iconButtons = container.querySelectorAll('button');
+    const menuBtn = iconButtons[iconButtons.length - 1];
+    fireEvent.click(menuBtn);
+
+    const loginListItem = screen.getByText(/Login \/ Sign Up/i);
+    fireEvent.click(loginListItem);
+    expect(mockNavigate).toHaveBeenCalledWith('/login');
   });
 });

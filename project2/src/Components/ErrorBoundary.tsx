@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react'
+import { Component, ErrorInfo, ReactNode } from 'react'
 import { Box, Typography } from '@mui/material'
 
 interface Props {
@@ -22,6 +22,10 @@ export default class ErrorBoundary extends Component<Props, State> {
             hasError: true
         }
    
+    }
+    componentDidCatch(error: Error, info: ErrorInfo): void {
+      console.log(error)
+      console.log(info)
     }
 
   render() {

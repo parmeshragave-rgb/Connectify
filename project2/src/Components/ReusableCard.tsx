@@ -12,8 +12,8 @@ return (
 <Card
   sx={{
     width: { xs: "350px", md: "380px" },
-    height: "360px",
-    justifyContent: "space-around",
+    height: "100%",
+    justifyContent: "space-between",
   }}
   elevation={5}
 >
@@ -33,7 +33,7 @@ return (
       </Avatar>
     }
 
-    action={showDelete && (<IconButton onClick={() => onDelete(post)}><DeleteIcon sx={{color:"whitesmoke"}}/></IconButton>)}
+    action={showDelete && (<IconButton onClick={() => onDelete(post)} data-testid="Delete"><DeleteIcon sx={{color:"whitesmoke"}}/></IconButton>)}
     title={<Typography fontWeight="bold">{post.title}</Typography>}
     subheader={<Typography>{post.views} views</Typography>}
   />
@@ -56,9 +56,10 @@ return (
       <IconButton
         onClick={() => handleLike(post)}
         sx={{ color: isLiked(post.id) ? "black" : "default" }}
+        data-testid="likeButton"
       >
         <Stack>
-          <ThumbUpIcon />
+          <ThumbUpIcon  />
           <Typography>
             {isLiked(post.id) ? post.reactions.likes + 1 : post.reactions.likes}
           </Typography>
@@ -68,6 +69,7 @@ return (
       <IconButton
         onClick={() => handleDislike(post)}
         sx={{ color: isDisLiked(post.id) ? "black" : "default" }}
+        data-testid="dislikeButton"
       >
         <Stack>
           <ThumbDownIcon />

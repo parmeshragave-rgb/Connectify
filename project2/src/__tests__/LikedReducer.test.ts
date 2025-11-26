@@ -1,5 +1,5 @@
-import likeReducer from "./LikedPostReducer";
-import { LIKE_POST, DISLIKE_POST } from "./LikedPostActions";
+import likeReducer from "../Redux/LikedPost/LikedPostReducer";
+import { LIKE_POST, DISLIKE_POST } from "../Redux/LikedPost/LikedPostActions";
 
 const post1 = { id: 1, title: "Test Post" };
 const post2 = { id: 2, title: "Another Post" };

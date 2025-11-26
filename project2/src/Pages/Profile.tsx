@@ -112,6 +112,7 @@ const Profile = () => {
               showDelete={true}
               onDelete={handleDeletePost}
               user={user}
+              data-testid="postcard"
             />
             </Grid>
            

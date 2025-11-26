@@ -1,8 +1,7 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import LikedPage from "../Pages/LikedPosts";
+import LikedPosts from "../Pages/LikedPosts";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
-import thunk from "redux-thunk";
 import { BrowserRouter } from "react-router-dom";
 import { likePost } from "../Redux/LikedPost/LikedPostActions";
 
@@ -13,19 +12,20 @@ jest.mock("../Redux/Users/userActions", () => ({
   fetchUsersData: jest.fn(() => ({ type: "FETCH_USERS" })),
 }));
 
-const mockStore = configureStore([thunk]);
+
+const mockStore = configureStore([]);
 
 describe("LikedPage Component", () => {
   const renderLiked = (store) =>
     render(
       <Provider store={store}>
         <BrowserRouter>
-          <LikedPage />
+          <LikedPosts />
         </BrowserRouter>
       </Provider>
     );
 
-  test("shows 'No liked posts yet.' when empty", () => {
+  test("renders text", () => {
     const store = mockStore({
       like: { likedPosts: [] },
       auth: { user: { email: "parmesh@gmail.com" } },
@@ -34,9 +34,10 @@ describe("LikedPage Component", () => {
 
     renderLiked(store);
 
+    expect(screen.getByText("Liked Posts")).toBeInTheDocument();
     expect(screen.getByText("No liked posts yet.")).toBeInTheDocument();
   });
-
+ 
   test("renders liked posts", () => {
     const store = mockStore({
       like: {
@@ -47,7 +48,7 @@ describe("LikedPage Component", () => {
             body: "Post Body",
             views: 20,
             likedBy: "parmesh@gmail.com",
-            userId: 10,
+      
           },
         ],
       },
@@ -96,7 +97,6 @@ describe("LikedPage Component", () => {
     renderLiked(store);
 
     const actions = store.getActions();
-    expect(actions.some((a) => a.type === "FETCH_USERS")).toBe(true);const actions = store.getActions();
     expect(actions.some((a) => a.type === "FETCH_USERS")).toBe(true);
   });
 });

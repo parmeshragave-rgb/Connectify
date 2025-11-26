@@ -7,7 +7,7 @@ import { Grid, Typography, Box, CircularProgress } from "@mui/material";
 import { likePost, dislikePost } from "../Redux/LikedPost/LikedPostActions";
 import type { RootState } from "../Redux";
 import PostCard from "../Components/ReusableCard";
-import { error } from "console";
+
 function Home() {
 
   const dispatch = useDispatch();

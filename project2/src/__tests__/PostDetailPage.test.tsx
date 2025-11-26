@@ -14,6 +14,12 @@ jest.mock("../Redux/LikedPost/LikedPostActions", () => ({
   dislikePost: jest.fn(() => ({ type: "DISLIKE_POST" })),
 }));
 
+const mockNavigate = jest.fn();
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useNavigate: () => mockNavigate,
+}));
+
 const mockStore = configureStore([thunk]);
 
 const renderWithStore = (store, id = "1") =>
@@ -60,6 +66,21 @@ describe("PostDetailPage Test", () => {
     expect(screen.getByText("Post Body")).toBeInTheDocument();
 
     expect(await screen.findByText("Backend comment")).toBeInTheDocument();
+    expect(await screen.findByText("@john")).toBeInTheDocument();
+    const userbtn=await screen.findByText("@john")
+    fireEvent.click(userbtn)
+  expect(mockNavigate).toHaveBeenCalledWith("/userprofile/10");
+  const avatarbtn=await screen.findByTestId("avatar")
+    fireEvent.click(avatarbtn)
+  expect(mockNavigate).toHaveBeenCalledWith("/userprofile/10");
+
+    const localuserbtn=await screen.findByTestId("usernamelocal")
+    fireEvent.click(localuserbtn)
+
+  expect(mockNavigate).toHaveBeenCalledWith("/profile");
+   
+
+
   });
 
   test("like button calls likePost", async () => {
@@ -76,7 +97,7 @@ describe("PostDetailPage Test", () => {
 
     renderWithStore(store);
 
-    const likeBtn = await screen.findByRole("button", { name: "" });
+    const likeBtn = screen.getByTestId("likeButton");
     fireEvent.click(likeBtn);
 
     expect(likePost).toHaveBeenCalledTimes(1);
@@ -96,8 +117,9 @@ describe("PostDetailPage Test", () => {
 
     renderWithStore(store);
 
-    const buttons = await screen.findAllByRole("button");
-    const dislikeBtn = buttons[1];
+    
+    const dislikeBtn =screen.getByTestId("dislikeButton");
+     
 
     fireEvent.click(dislikeBtn);
 
