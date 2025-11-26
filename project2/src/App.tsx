@@ -11,7 +11,7 @@ const LazyUserProfile = lazy(() => import('./Pages/UserProfile'));
 const LazyLogin = lazy(() => import('./Pages/Login'));
 const LazyHome = lazy(() => import('./Pages/Home'));
 import { Box, CircularProgress, Typography } from "@mui/material";
-
+import ErrorBoundary from "./Components/ErrorBoundary";
 
 function App() {
   return (
@@ -20,21 +20,21 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Suspense fallback={
-            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><LazyHome/></Suspense>} />
+        <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><ErrorBoundary><LazyHome/></ErrorBoundary></Suspense>} />
           <Route path="search" element={<Suspense fallback={
-            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><LazySearchUsers/></Suspense>} />
+            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><ErrorBoundary><LazySearchUsers/></ErrorBoundary></Suspense>} />
           <Route path="/post/:id" element={<Suspense fallback={
-            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><LazyPostDetailPage/></Suspense>}  />
+            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><ErrorBoundary><LazyPostDetailPage/></ErrorBoundary></Suspense>}  />
           <Route path="/userprofile/:id" element={<Suspense fallback={
-            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><LazyUserProfile/></Suspense>} />
+            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><ErrorBoundary><LazyUserProfile/></ErrorBoundary></Suspense>} />
           <Route path="liked" element={<Suspense fallback={
-            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><LazyLikedPage/></Suspense>}  />
+            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><ErrorBoundary><LazyLikedPage/></ErrorBoundary></Suspense>}  />
           <Route path="quotes" element={<Suspense fallback={
-            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><LazyQuotesPage/></Suspense>}/>
+            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><ErrorBoundary><LazyQuotesPage/></ErrorBoundary></Suspense>}/>
           <Route path="profile" element={<Suspense fallback={
-            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><LazyProfile/></Suspense>} />
+            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><ErrorBoundary><LazyProfile/></ErrorBoundary></Suspense>} />
           <Route path="login" element={<Suspense fallback={
-            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><LazyLogin/></Suspense>}  />
+            <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><ErrorBoundary><LazyLogin/></ErrorBoundary></Suspense>}  />
             <Route path="*" element={<Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><Typography variant="h6">No Match Found</Typography></Box>}></Route>
         </Routes>
       </Router>

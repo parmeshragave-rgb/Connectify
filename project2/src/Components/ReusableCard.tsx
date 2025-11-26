@@ -1,4 +1,4 @@
-import { Card,CardActions,CardHeader,Avatar,Typography,CardContent,IconButton,Stack } from "@mui/material";
+import { Card,CardActions,CardHeader,Avatar,Typography,CardContent,IconButton,Stack,Box, CardActionArea } from "@mui/material";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -12,10 +12,8 @@ return (
 <Card
   sx={{
     width: { xs: "350px", md: "380px" },
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
+    height: "360px",
+    justifyContent: "space-around",
   }}
   elevation={5}
 >
@@ -40,10 +38,21 @@ return (
     subheader={<Typography>{post.views} views</Typography>}
   />
   <CardContent onClick={() => clickhandler(post.id)} sx={{cursor:"pointer"}}>
-    <Typography>{post.body}</Typography>
+    <Typography>{post.body.substring(0,180)}<Box
+                component="span"
+                onClick={()=> clickhandler(post.id)}
+                sx={{
+                  fontFamily: 'sans-serif',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  display: 'inline',
+                }}
+              >
+                ...See More
+              </Box></Typography>
   </CardContent>
- 
-    <CardActions>
+
+    <CardActions sx={{height:"60px",mt:"10px"}}>
       <IconButton
         onClick={() => handleLike(post)}
         sx={{ color: isLiked(post.id) ? "black" : "default" }}

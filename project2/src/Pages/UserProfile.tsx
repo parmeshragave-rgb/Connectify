@@ -189,7 +189,7 @@ const reverseString =(str) => {
                   display={"flex"}
                   sx={{
                     display: "flex",
-                    // flexDirection: { xs: "column", md: "row" },
+                    flexDirection: { xs: "column", md: "row" },
                     mb: "20px",
                     mr: "10px",
                     justifyContent: "space-around",

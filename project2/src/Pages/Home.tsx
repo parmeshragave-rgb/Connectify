@@ -7,7 +7,9 @@ import { Grid, Typography, Box, CircularProgress } from "@mui/material";
 import { likePost, dislikePost } from "../Redux/LikedPost/LikedPostActions";
 import type { RootState } from "../Redux";
 import PostCard from "../Components/ReusableCard";
+import { error } from "console";
 function Home() {
+
   const dispatch = useDispatch();
   const { user } = useSelector((s: RootState) => s.auth);
   const { userdata } = useSelector((s: RootState) => s.users);
@@ -38,6 +40,9 @@ interface Post {
       .catch((error) => console.log(error.message));
   };
 
+  // useEffect(() => {
+  //  throw new error
+  // },[])
   useEffect(() => {
     dispatch(fetchUsersData());
   }, []);
