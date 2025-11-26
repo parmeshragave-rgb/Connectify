@@ -52,8 +52,10 @@ interface Post {
       setSkip((prevSkip) => prevSkip + 10);
     }
   }, [loading]);
+  
 
-  const handleScroll = () => {
+useEffect(() => {
+const handleScroll = () => {
     if (
       document.body.scrollHeight - 300 <
       window.scrollY + window.innerHeight
@@ -63,6 +65,9 @@ interface Post {
   };
 
   window.addEventListener("scroll", handleScroll);
+  return () => window.removeEventListener("scroll", handleScroll);
+},[])
+  
 
   const handleLike = (post:Post) => {
     dispatch(likePost(post, user?.email));
