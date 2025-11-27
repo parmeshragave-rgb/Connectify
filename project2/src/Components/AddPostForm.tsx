@@ -63,7 +63,9 @@ const AddPostForm = ({ open, onClose, onSubmit }) => {
             onChange={(e) => setBody(e.target.value)}
             error={!!errors.body}
             helperText={errors.body}
-
+            multiline
+            minRows={3}
+            maxRows={10}
           />
 
           <Button

@@ -12,8 +12,10 @@ return (
 <Card
   sx={{
     width: { xs: "350px", md: "380px" },
-    height: "100%",
+    height: "360px",
+    display:"flex",
     justifyContent: "space-between",
+    flexDirection:"column"
   }}
   elevation={5}
 >
@@ -34,11 +36,11 @@ return (
     }
 
     action={showDelete && (<IconButton onClick={() => onDelete(post)} data-testid="Delete"><DeleteIcon sx={{color:"whitesmoke"}}/></IconButton>)}
-    title={<Typography fontWeight="bold">{post.title}</Typography>}
+    title={<Typography fontWeight="bold" sx={{ wordBreak:"break-word",whiteSpace:"normal"}}>{post.title}</Typography>}
     subheader={<Typography>{post.views} views</Typography>}
   />
-  <CardContent onClick={() => clickhandler(post.id)} sx={{cursor:"pointer"}}>
-    <Typography>{post.body.substring(0,180)}<Box
+  <CardContent onClick={() => clickhandler(post.id)} sx={{cursor:"pointer",flex:1}}>
+    <Typography sx={{ wordBreak:"break-word",whiteSpace:"normal"}}>{post.body.substring(0,180)}<Box
                 component="span"
                 onClick={()=> clickhandler(post.id)}
                 sx={{

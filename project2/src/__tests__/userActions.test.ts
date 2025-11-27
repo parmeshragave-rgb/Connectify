@@ -50,9 +50,9 @@ describe("user Actions", () => {
    
     dispatch(fetchUsersData())
     
-    await new Promise((r) => setTimeout(r, 0));
 
     expect(dispatch).toHaveBeenCalledWith({ type: FETCH_USERS });
+    await new Promise((r) => setTimeout(r, 0));
 
     expect(dispatch).toHaveBeenCalledWith({
       type: FETCH_USERS_SUCCESS,

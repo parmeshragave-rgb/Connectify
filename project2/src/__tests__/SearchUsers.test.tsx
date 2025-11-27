@@ -33,6 +33,9 @@ describe("SearchUsers component", () => {
   });
 
   test("renders users and navigates when clicked", async () => {
+    
+    (axios.get as jest.Mock).mockResolvedValueOnce({ data: { users: [], total: 0 } });
+  
     (axios.get as jest.Mock).mockResolvedValueOnce({ data: { users: [{ id: 5, firstName: "Jane", lastName: "Doe", username: "jane", image: "" }], total: 1 } });
     const store = mockStore({ auth: { user: { username: "tester" } } });
 

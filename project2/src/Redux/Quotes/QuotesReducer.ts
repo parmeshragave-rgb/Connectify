@@ -1,6 +1,6 @@
 import { FETCH_QUERY,FETCH_QUERY_FAILURE,FETCH_QUERY_SUCCESS } from "./QuotesActions"
 
-interface QuotesInitialState{
+export interface QuotesInitialState{
     loading:boolean,
     quotes:any[],
     error:string

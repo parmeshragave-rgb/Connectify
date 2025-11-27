@@ -85,7 +85,7 @@ test("signup validation: invalid email and short password", () => {
   setup();
   fireEvent.click(screen.getByText(/new user\? sign up/i));
 
-  fireEvent.change(screen.getByPlaceholderText("Email"), { target: { value: "bademail" } });
+  fireEvent.change(screen.getByPlaceholderText("Email"), { target: { value: "email" } });
   fireEvent.change(screen.getByPlaceholderText("Username"), { target: { value: "u" } });
   fireEvent.change(screen.getByPlaceholderText("Password"), { target: { value: "123" } });
 

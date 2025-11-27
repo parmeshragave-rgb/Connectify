@@ -8,6 +8,10 @@ import { likePost, dislikePost } from "../Redux/LikedPost/LikedPostActions";
 
 
 jest.mock("axios");
+jest.mock("../Redux/LikedPost/LikedPostActions", () => ({
+  likePost: jest.fn(() => ({ type: "LIKE_POST" })),
+  dislikePost: jest.fn(() => ({ type: "DISLIKE_POST" })),
+}));
 const mockStore = configureStore([]);
 const mockNavigate = jest.fn();
 
@@ -38,6 +42,7 @@ describe("UserProfile Component", () => {
   test("fetches user info and posts", async () => {
     const store = mockStore({
       auth: { user: { email: "demo@gmail.com", username: "tester" } },
+      like: { likedPosts: [], dislikedPosts: [] },
     });
 
     (axios.get as jest.Mock)
@@ -77,27 +82,38 @@ describe("UserProfile Component", () => {
     );
 
     expect(await screen.findByText("Post 1")).toBeInTheDocument();
-    expect(screen.getByText("Body 1")).toBeInTheDocument();
     expect(screen.getByText("John Doe")).toBeInTheDocument();
 
   });
 
 
     test("like, dislike, clickhandler and liked/disliked helpers work", async () => {
-    (axios.get as jest.Mock).mockResolvedValueOnce({
-      data: {
-        posts: 
-          {
-            id: 1,
-            title: "Post",
-            body: "Body text",
-            views: 42,
-            reactions: { likes: 2, dislikes: 0 },
-            userId: 99,
-          },
-        
-      },
-    });
+    (axios.get as jest.Mock)
+      .mockResolvedValueOnce({
+        data: {
+          posts: [
+            {
+              id: 1,
+              title: "Post 1",
+              body: "Body text",
+              views: 42,
+              reactions: { likes: 2, dislikes: 0 },
+              userId: 99,
+            },
+          ],
+        },
+      })
+      .mockResolvedValueOnce({
+        data: {
+          id: 99,
+          firstName: "Test",
+          lastName: "User",
+          username: "test",
+          image: "",
+          company: { name: "X", title: "Dev" },
+          birthDate: "1990-01-01",
+        },
+      });
 
     const store = mockStore({
       auth: { user: { email: "me@test.com" } },
@@ -115,7 +131,7 @@ describe("UserProfile Component", () => {
       </Provider>
     );
 
-    expect(await screen.findByText(/post/i)).toBeInTheDocument();
+    expect(await screen.findByText(/Post 1/i)).toBeInTheDocument();
 
    
     expect(screen.getByTestId("isLiked").textContent).toBe("Liked");

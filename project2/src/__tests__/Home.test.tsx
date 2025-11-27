@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent} from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import Home from "../Pages/Home";
 import axios from "axios";
@@ -82,6 +82,42 @@ describe("Home Component", () => {
     
 
 
+  });
+
+  test('redirects to login when not authenticated', () => {
+    const store = mockStore({ auth: { user: null }, users: { userdata: [] }, like: { likedPosts: [], dislikedPosts: [] } });
+    (axios.get as jest.Mock).mockResolvedValueOnce({ data: { posts: [] } });
+
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <Home />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(mockNavigate).toHaveBeenCalledWith('/login');
+  });
+
+  test('shows loading spinner on scroll (infinite load)', async () => {
+    (axios.get as jest.Mock).mockResolvedValue({ data: { posts: [] } });
+    const store = mockStore({ auth: { user: { email: 'test@test.com' } }, users: { userdata: [] }, like: { likedPosts: [], dislikedPosts: [] } });
+
+    Object.defineProperty(window, 'innerHeight', { value: 200, configurable: true });
+    Object.defineProperty(window, 'scrollY', { value: 900, configurable: true });
+    Object.defineProperty(document.body, 'scrollHeight', { value: 1000, configurable: true });
+
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <Home />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    fireEvent.scroll(window);
+
+    expect((axios.get as jest.Mock).mock.calls.length).toBeGreaterThan(0);
   });
 
  
