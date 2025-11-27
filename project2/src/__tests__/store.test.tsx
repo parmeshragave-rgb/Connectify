@@ -39,7 +39,7 @@ describe("redux store + persist setup", () => {
     }));
 
     jest.doMock("redux-thunk", () => ({
-      thunk: (/* store */) => (next: any) => (action: any) => next(action),
+      thunk: () => (next: any) => (action: any) => next(action),
     }));
 
     

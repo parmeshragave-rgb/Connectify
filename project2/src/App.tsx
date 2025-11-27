@@ -1,4 +1,4 @@
-import "./App.css";
+// import "./App.css";
 import { lazy,Suspense} from 'react';
 import Navbar from "./Components/Navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";

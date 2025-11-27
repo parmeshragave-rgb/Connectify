@@ -32,47 +32,50 @@ describe("quotes Actions", () => {
   });
 
   test("fetchQuerySuccess returns correct action", () => {
-    const usersdata = [{ id: 1, firstName: "Tknendwdw", image: "" }];
-    const action = fetchQuerySuccess(usersdata);
+    const quote = [{ authour: "Ainsten", quote:"every action has a equal and opposite reaction" }];
+    const action = fetchQuerySuccess(quote);
 
     expect(action).toEqual({
       type: FETCH_QUERY_SUCCESS,
-      payload: usersdata,
+      payload: quote,
     });
   });
 
-  test("fetchUsersData dispatches actions on success", async () => {
-    const users = [{ id: 1, username: "a" }];
-    (axios.get as jest.Mock).mockResolvedValueOnce({ data: { users } });
+  test("fetchQueryData dispatches actions on success", async () => {
+    const quote = [{ authour: "Ainsten", quote:"every action has a equal and opposite reaction" }];
+    
+    (axios.get as jest.Mock).mockResolvedValueOnce({ data: { quote } });
 
     const dispatch = jest.fn();
-
-   
-    dispatch(fetchQuerydata())
+     await fetchQuerydata()(dispatch);
     
-
     expect(dispatch).toHaveBeenCalledWith({ type: FETCH_QUERY });
-    await new Promise((r) => setTimeout(r, 0));
 
     expect(dispatch).toHaveBeenCalledWith({
       type: FETCH_QUERY_SUCCESS,
-      payload: users,
+      payload: quote,
+   
+    
+   
     });
   });
 
-  test("fetchUsersData dispatches failure on axios error", async () => {
-    (axios.get as jest.Mock).mockRejectedValueOnce(new Error("error"));
+  test("fetchQueryData dispatches failure on axios error", async () => {
+
+    const errorMessage = "Network Error Message";
+    (axios.get as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
+
+    
     const dispatch = jest.fn();
 
-    fetchQuerydata()(dispatch);
+    await fetchQuerydata()(dispatch);
 
-
+    
     expect(dispatch).toHaveBeenCalledWith({ type: FETCH_QUERY });
-    await new Promise((r) => setTimeout(r, 0));
 
     expect(dispatch).toHaveBeenCalledWith({
       type: FETCH_QUERY_FAILURE,
-      payload: "error",
+      payload: errorMessage, 
     });
   });
 });

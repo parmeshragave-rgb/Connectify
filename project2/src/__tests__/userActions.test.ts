@@ -47,26 +47,36 @@ describe("user Actions", () => {
 
     const dispatch = jest.fn();
 
+     await fetchUsersData()(dispatch);
    
-    dispatch(fetchUsersData())
+  
     
 
     expect(dispatch).toHaveBeenCalledWith({ type: FETCH_USERS });
-    await new Promise((r) => setTimeout(r, 0));
+    
 
     expect(dispatch).toHaveBeenCalledWith({
       type: FETCH_USERS_SUCCESS,
       payload: users,
     });
+
+
+     
   });
 
   test("fetchUsersData dispatches failure on axios error", async () => {
-    (axios.get as jest.Mock).mockRejectedValueOnce(new Error("error"));
+     const errorMessage = "Network Error Message";
+    (axios.get as jest.Mock).mockRejectedValueOnce(new Error(errorMessage));
+
+    
     const dispatch = jest.fn();
 
-    fetchUsersData()(dispatch);
+    await fetchUsersData()(dispatch);
 
-    await new Promise((r) => setTimeout(r, 0));
+    
+    expect(dispatch).toHaveBeenCalledWith({ type: FETCH_USERS });
+
+   
 
     expect(dispatch).toHaveBeenCalledWith({ type: FETCH_USERS });
     expect(dispatch).toHaveBeenCalledWith({

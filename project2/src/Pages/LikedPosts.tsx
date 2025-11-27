@@ -21,6 +21,9 @@ function LikedPage() {
     dispatch(fetchUsersData())
 
   }, []);
+  const clickhandler = (id:number) => {
+    navigate(`/post/${id}`);
+  };
   
  
   
@@ -62,7 +65,21 @@ function LikedPage() {
                 />
 
                 <CardContent sx={{cursor:"pointer",flex:1 }}>
-                  <Typography sx={{ wordBreak:"break-word",whiteSpace:"normal"}} >{post.body}</Typography>
+                  <Typography sx={{ wordBreak:"break-word",whiteSpace:"normal"}} >{post.body.substring(0,180)}
+
+                    <Box
+                component="span"
+                onClick={()=> clickhandler(post.id)}
+                sx={{
+                  fontFamily: 'sans-serif',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  display: 'inline',
+                }}
+              >
+                ...See More
+              </Box>
+                  </Typography>
                 </CardContent>
 
                 <CardActions>

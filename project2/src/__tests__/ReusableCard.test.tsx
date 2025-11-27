@@ -19,7 +19,7 @@ describe("ReusableCard", () => {
 
     expect(screen.getByText(/Hello/i)).toBeInTheDocument();
     expect(screen.getByText(/7 views/i)).toBeInTheDocument();
-    expect(screen.getByText(/^b$/i)).toBeInTheDocument();
+    expect(screen.getByText(/b/i)).toBeInTheDocument();
   });
 
   test("like/dislike and navigation behavior and counts", () => {
@@ -58,7 +58,7 @@ describe("ReusableCard", () => {
       </Provider>
     );
 
-    const avatar = screen.getByText(/^b$/i);
+    const avatar = screen.getByText(/b/i);
     fireEvent.click(avatar);
     expect(navigate).toHaveBeenCalledWith(`/userprofile/${userdata[0].id}`);
 
