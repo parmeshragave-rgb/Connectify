@@ -32,6 +32,7 @@ const AddPostForm = ({ open, onClose, onSubmit }) => {
       id: Date.now(),
       title,
       body,
+      views:0,
       reactions: { likes: 0, dislikes: 0 },
     };
 

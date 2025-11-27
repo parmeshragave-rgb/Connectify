@@ -23,10 +23,7 @@ function QuotesPage({ fetchQuerydata, quotesdata }) {
     fetchQuerydata();
   }, []);
 
-  if (!user) {
-    navigate("/login");
-    return;
-  } 
+ 
   return quotesdata.loading ? (
     <>
     

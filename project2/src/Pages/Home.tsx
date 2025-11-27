@@ -89,10 +89,7 @@ const handleScroll = () => {
     navigate(`/post/${id}`);
   };
 
-  if (!user) {
-    navigate("/login");
-    return;
-  }
+  
 
   return (
     <>

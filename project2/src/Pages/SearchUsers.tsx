@@ -97,10 +97,7 @@ function SearchUsers() {
 
   const clickhandler = (id:number) => navigate(`/userprofile/${id}`);
 
-  if (!user) {
-    navigate("/login");
-    return null;
-  }
+ 
 interface userdata{
   
       id: number,

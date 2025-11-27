@@ -37,7 +37,7 @@ return (
 
     action={showDelete && (<IconButton onClick={() => onDelete(post)} data-testid="Delete"><DeleteIcon sx={{color:"whitesmoke"}}/></IconButton>)}
     title={<Typography fontWeight="bold" sx={{ wordBreak:"break-word",whiteSpace:"normal"}}>{post.title}</Typography>}
-    subheader={<Typography>{post.views} views</Typography>}
+    subheader={<Typography>{post?.views || 0} views</Typography>}
   />
   <CardContent onClick={() => clickhandler(post.id)} sx={{cursor:"pointer",flex:1}}>
     <Typography sx={{ wordBreak:"break-word",whiteSpace:"normal"}}>{post.body.substring(0,180)}<Box
