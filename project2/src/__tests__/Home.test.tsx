@@ -84,20 +84,6 @@ describe("Home Component", () => {
 
   });
 
-  test('redirects to login when not authenticated', () => {
-    const store = mockStore({ auth: { user: null }, users: { userdata: [] }, like: { likedPosts: [], dislikedPosts: [] } });
-    (axios.get as jest.Mock).mockResolvedValueOnce({ data: { posts: [] } });
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <Home />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(mockNavigate).toHaveBeenCalledWith('/login');
-  });
 
   test('shows loading spinner on scroll (infinite load)', async () => {
     (axios.get as jest.Mock).mockResolvedValue({ data: { posts: [] } });

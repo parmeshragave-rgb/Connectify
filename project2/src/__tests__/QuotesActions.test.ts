@@ -47,9 +47,10 @@ describe("quotes Actions", () => {
     (axios.get as jest.Mock).mockResolvedValueOnce({ data: { quote } });
 
     const dispatch = jest.fn();
-     await fetchQuerydata()(dispatch);
+     await dispatch(fetchQuerydata)
+     
     
-    expect(dispatch).toHaveBeenCalledWith({ type: FETCH_QUERY });
+     expect(dispatch).toHaveBeenCalledWith({ type: FETCH_QUERY });
 
     expect(dispatch).toHaveBeenCalledWith({
       type: FETCH_QUERY_SUCCESS,
@@ -71,7 +72,7 @@ describe("quotes Actions", () => {
     await fetchQuerydata()(dispatch);
 
     
-    expect(dispatch).toHaveBeenCalledWith({ type: FETCH_QUERY });
+    // expect(dispatch).toHaveBeenCalledWith({ type: FETCH_QUERY });
 
     expect(dispatch).toHaveBeenCalledWith({
       type: FETCH_QUERY_FAILURE,

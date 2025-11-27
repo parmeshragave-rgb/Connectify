@@ -33,7 +33,7 @@ describe("QuotesReducer", () => {
     expect(result.error).toBe("");
   });
 
-  test("handles FETCH_USERS_FAILURE action", () => {
+  test("handles FETCH_QUERY_FAILURE action", () => {
     const action = { type: FETCH_QUERY_FAILURE, payload: "error" } as any;
     const result = Quotereducer({ ...initialState, loading: true }, action);
     expect(result.loading).toBe(false);

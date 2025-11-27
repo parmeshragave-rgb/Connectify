@@ -17,7 +17,7 @@ import ProtectedRoute from "./Components/ProtectedRoute"
 function App() {
   return (
     <>
-      <Router>
+      
         <Navbar />
         <Routes>
           <Route path="/" element={<Suspense fallback={
@@ -38,7 +38,7 @@ function App() {
             <Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><CircularProgress sx={{color:"black"}}/></Box>}><ErrorBoundary><LazyLogin/></ErrorBoundary></Suspense>}  />
             <Route path="*" element={<Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}><Typography variant="h6">No Match Found</Typography></Box>}></Route>
         </Routes>
-      </Router>
+      
     </>
   )
 }

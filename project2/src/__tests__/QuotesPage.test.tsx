@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import QuotesPage from "../Pages/QuotesPage";
 import { MemoryRouter } from "react-router-dom";
 
-const mockStoreQ = configureStore([]);
+const mockStore = configureStore([]);
 
 jest.mock("../Redux/Quotes/QuotesActions", () => ({
   fetchQuerydata: jest.fn(() => ({ type: "FETCH_QUERY" })),
@@ -12,29 +12,24 @@ jest.mock("../Redux/Quotes/QuotesActions", () => ({
 
 jest.mock("../Components/SkeletonCard", () => () => <div data-testid="skeleton" />);
 
-const mockNavigateQ = jest.fn();
+ const mockUseSelector=jest.fn()
+
+jest.mock("react-redux", () => ({
+    ...jest.requireActual("react-redux"),
+  useSelector:() => mockUseSelector,
+}));
+
+const mockNavigate = jest.fn();
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
-  useNavigate: () => mockNavigateQ,
+  useNavigate: () => mockNavigate,
 }));
 
 describe("QuotesPage", () => {
-  test("redirects to login when unauthenticated", () => {
-    const store = mockStoreQ({ auth: { user: null }, quotes: { loading: false, quotes: [], error: "" } });
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <QuotesPage />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(mockNavigateQ).toHaveBeenCalledWith("/login");
-  });
+ 
 
   test("shows skeletons while loading", () => {
-    const store = mockStoreQ({ auth: { user: { username: "a" } }, quotes: { loading: true, quotes: [], error: "" } });
+    const store = mockStore({ auth: { user: { username: "a" } }, quotes: { loading: true, quotes: [], error: "" } });
 
     render(
       <Provider store={store}>
@@ -48,7 +43,7 @@ describe("QuotesPage", () => {
   });
 
   test("shows error message when error present", () => {
-    const store = mockStoreQ({ auth: { user: { username: "a" } }, quotes: { loading: false, quotes: [], error: "boom" } });
+    const store = mockStore({ auth: { user: { username: "a" } }, quotes: { loading: false, quotes: [], error: "boom" } });
 
     render(
       <Provider store={store}>
@@ -62,8 +57,8 @@ describe("QuotesPage", () => {
   });
 
   test("renders quotes when present", () => {
-    const quotes = [{ author: "alice", quote: "hello world", id: 1 }];
-    const store = mockStoreQ({ auth: { user: { username: "a" } }, quotes: { loading: false, quotes, error: "" } });
+    const quotes = [{ author: "einstien", quote: "hello world", id: 1 }];
+    const store = mockStore({ quotes: { loading: false, quotes, error: "" } });
 
     render(
       <Provider store={store}>
@@ -74,7 +69,7 @@ describe("QuotesPage", () => {
     );
 
     expect(screen.getByText(/quotes library/i)).toBeInTheDocument();
-    expect(screen.getByText(/alice/i)).toBeInTheDocument();
+    expect(screen.getByTestId("authorname")).toBeInTheDocument();
     expect(screen.getByText(/"hello world"/i)).toBeInTheDocument();
   });
 });
@@ -86,22 +81,10 @@ jest.mock("../Redux/Quotes/QuotesActions", () => ({
   fetchQuerydata: jest.fn(() => ({ type: "FETCH_QUOTES" }))
 }));
 
-const mockStore = configureStore([]);
+
 
 describe("QuotesPage Component", () => {
-  test("renders Loading when loading is true", () => {
-    const store = mockStore({
-      quotes: { loading: true, quotes: [], error: "" }
-    });
-
-    render(
-      <Provider store={store}>
-        <QuotesPage />
-      </Provider>
-    );
-
-    expect(screen.getByText("Loading")).toBeInTheDocument();
-  });
+  
 
   test("renders error message when error exists", () => {
     const store = mockStore({

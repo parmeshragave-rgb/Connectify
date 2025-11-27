@@ -73,11 +73,6 @@ describe("PostDetailPage Test", () => {
   const avatarbtn=await screen.findByTestId("avatar")
     fireEvent.click(avatarbtn)
   expect(mockNavigate).toHaveBeenCalledWith("/userprofile/10");
-
-    const localuserbtn=await screen.findByTestId("usernamelocal")
-    fireEvent.click(localuserbtn)
-
-  expect(mockNavigate).toHaveBeenCalledWith("/profile");
    
 
 

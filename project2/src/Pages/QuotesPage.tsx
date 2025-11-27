@@ -100,7 +100,7 @@ function QuotesPage({ fetchQuerydata, quotesdata }) {
                       "{quote.quote}"
                     </Typography>
                     <Typography sx={{ ml: {xs:"240px",sm:"440px",md:"500px"}, mt: "5px",fontFamily: "fantasy",fontStyle: "italic",fontSize: "18px"}}>By</Typography>
-                    <Typography sx={{ ml: {xs:"250px",sm:"450px",md:"520px"},fontFamily: "fantasy",fontStyle: "italic",fontSize: "18px" }}>
+                    <Typography data-testid="authorname" sx={{ ml: {xs:"250px",sm:"450px",md:"520px"},fontFamily: "fantasy",fontStyle: "italic",fontSize: "18px" }}>
                       -{quote.author}
                     </Typography>
                   </Stack>

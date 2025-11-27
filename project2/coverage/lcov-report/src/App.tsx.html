@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.66% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>16/24</span>
+                <span class='fraction'>24/24</span>
             </div>
         
             
@@ -37,9 +37,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">5.88% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/17</span>
+                <span class='fraction'>17/17</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -113,20 +113,20 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">35x</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -159,14 +159,14 @@
 import { lazy,Suspense} from 'react';
 import Navbar from "./Components/Navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-const LazySearchUsers=lazy(<span class="fstat-no" title="function not covered" >() =</span>&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > import('</span>./Pages/SearchUsers'))</span>
-const LazyPostDetailPage=lazy(<span class="fstat-no" title="function not covered" >() =</span>&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > import('</span>./Pages/PostDetailPage'))</span>
-const LazyLikedPage =lazy(<span class="fstat-no" title="function not covered" >() =</span>&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > import('</span>./Pages/LikedPosts'))</span>
-const LazyQuotesPage =lazy(<span class="fstat-no" title="function not covered" >() =</span>&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > import('</span>./Pages/QuotesPage'))</span>
-const LazyProfile =lazy(<span class="fstat-no" title="function not covered" >() =</span>&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > import('</span>./Pages/Profile'))</span>
-const LazyUserProfile = lazy(<span class="fstat-no" title="function not covered" >() =</span>&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > import('</span>./Pages/UserProfile'))</span>;
-const LazyLogin = lazy(<span class="fstat-no" title="function not covered" >() =</span>&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > import('</span>./Pages/Login'))</span>;
-const LazyHome = lazy(<span class="fstat-no" title="function not covered" >() =</span>&gt;<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" > import('</span>./Pages/Home'))</span>;
+const LazySearchUsers=lazy(() =&gt; import('./Pages/SearchUsers'))
+const LazyPostDetailPage=lazy(() =&gt; import('./Pages/PostDetailPage'))
+const LazyLikedPage =lazy(() =&gt; import('./Pages/LikedPosts'))
+const LazyQuotesPage =lazy(() =&gt; import('./Pages/QuotesPage'))
+const LazyProfile =lazy(() =&gt; import('./Pages/Profile'))
+const LazyUserProfile = lazy(() =&gt; import('./Pages/UserProfile'));
+const LazyLogin = lazy(() =&gt; import('./Pages/Login'));
+const LazyHome = lazy(() =&gt; import('./Pages/Home'));
 import { Box, CircularProgress, Typography } from "@mui/material";
 import ErrorBoundary from "./Components/ErrorBoundary";
 import ProtectedRoute from "./Components/ProtectedRoute"
@@ -174,7 +174,7 @@ import ProtectedRoute from "./Components/ProtectedRoute"
 function App() {
   return (
     &lt;&gt;
-      &lt;Router&gt;
+      
         &lt;Navbar /&gt;
         &lt;Routes&gt;
           &lt;Route path="/" element={&lt;Suspense fallback={
@@ -195,7 +195,7 @@ function App() {
             &lt;Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}&gt;&lt;CircularProgress sx={{color:"black"}}/&gt;&lt;/Box&gt;}&gt;&lt;ErrorBoundary&gt;&lt;LazyLogin/&gt;&lt;/ErrorBoundary&gt;&lt;/Suspense&gt;}  /&gt;
             &lt;Route path="*" element={&lt;Box display={"flex"} justifyContent={"center"} sx={{mt:"220px"}}&gt;&lt;Typography variant="h6"&gt;No Match Found&lt;/Typography&gt;&lt;/Box&gt;}&gt;&lt;/Route&gt;
         &lt;/Routes&gt;
-      &lt;/Router&gt;
+      
     &lt;/&gt;
   )
 }
@@ -208,7 +208,7 @@ export default App;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-11-27T08:19:16.595Z
+                at 2025-11-27T09:38:03.365Z
             </div>
         <script src="../prettify.js"></script>
         <script>

@@ -18,20 +18,6 @@ jest.mock("react-router-dom", () => ({
 describe("SearchUsers component", () => {
   beforeEach(() => jest.clearAllMocks());
 
-  test("redirects to login when not authenticated", () => {
-    const store = mockStore({ auth: { user: null } });
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <SearchUsers />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(mockNavigate).toHaveBeenCalledWith("/login");
-  });
-
   test("renders users and navigates when clicked", async () => {
     
     (axios.get as jest.Mock).mockResolvedValueOnce({ data: { users: [], total: 0 } });

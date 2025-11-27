@@ -1,17 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import App from "../App";
 
-
-
-  const mockUseSelector=jest.fn()
+const mockUseSelector = jest.fn();
 
 jest.mock("react-redux", () => ({
-    ...jest.requireActual("react-redux"),
-  useSelector:() => mockUseSelector,
+  ...jest.requireActual("react-redux"),
+  useSelector: (selector) => mockUseSelector(selector),
 }));
 
-
+import App from "../App";
 
 jest.mock("../Components/Navbar.tsx", () => () => <div>Mock Navbar</div>);
 jest.mock("../Pages/Home.tsx", () => () => <div>Mock Home</div>);
@@ -23,10 +20,13 @@ jest.mock("../Pages/QuotesPage.tsx", () => () => <div>Mock Quotes</div>);
 jest.mock("../Pages/Profile.tsx", () => () => <div>Mock Profile</div>);
 jest.mock("../Pages/Login.tsx", () => () => <div>Mock Login</div>);
 
-
 describe("App with Protected Routes", () => {
-  test("renders navbar", () => {
-    mockUseSelector.mockReturnValue({ isAuthenticated: true });
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test("renders navbar and home page when authenticated", async () => {
+    mockUseSelector.mockReturnValue({ isAuthenticated: true, user: { id: 1 } });
 
     render(
       <MemoryRouter initialEntries={["/"]}>
@@ -35,21 +35,10 @@ describe("App with Protected Routes", () => {
     );
 
     expect(screen.getByText("Mock Navbar")).toBeInTheDocument();
-  });
-
-  test("renders home page", async () => {
-    mockUseSelector.mockReturnValue({ isAuthenticated: true });
-
-    render(
-      <MemoryRouter initialEntries={["/"]}>
-        <App />
-      </MemoryRouter>
-    );
-
     expect(await screen.findByText("Mock Home")).toBeInTheDocument();
   });
 
-  test("redirects login", async () => {
+  test("redirects login when unauthenticated on home route", async () => {
     mockUseSelector.mockReturnValue({ isAuthenticated: false });
 
     render(
@@ -61,8 +50,8 @@ describe("App with Protected Routes", () => {
     expect(await screen.findByText("Mock Login")).toBeInTheDocument();
   });
 
-  test("search users", async () => {
-    mockUseSelector.mockReturnValue({ isAuthenticated: true });
+  test("search users when authenticated", async () => {
+    mockUseSelector.mockReturnValue({ isAuthenticated: true, user: { id: 1 } });
 
     render(
       <MemoryRouter initialEntries={["/search"]}>
@@ -73,7 +62,7 @@ describe("App with Protected Routes", () => {
     expect(await screen.findByText("Mock Search Users")).toBeInTheDocument();
   });
 
-  test("redirects login", async () => {
+  test("redirects login on search route when unauthenticated", async () => {
     mockUseSelector.mockReturnValue({ isAuthenticated: false });
 
     render(
@@ -85,8 +74,8 @@ describe("App with Protected Routes", () => {
     expect(await screen.findByText("Mock Login")).toBeInTheDocument();
   });
 
-  test("post detail", async () => {
-    mockUseSelector.mockReturnValue({ isAuthenticated: true });
+  test("post detail when authenticated", async () => {
+    mockUseSelector.mockReturnValue({ isAuthenticated: true, user: { id: 1 } });
 
     render(
       <MemoryRouter initialEntries={["/post/10"]}>
@@ -97,7 +86,7 @@ describe("App with Protected Routes", () => {
     expect(await screen.findByText("Mock Post Detail")).toBeInTheDocument();
   });
 
-  test("redirect login", async () => {
+  test("redirect login on post detail route when unauthenticated", async () => {
     mockUseSelector.mockReturnValue({ isAuthenticated: false });
 
     render(
@@ -109,8 +98,8 @@ describe("App with Protected Routes", () => {
     expect(await screen.findByText("Mock Login")).toBeInTheDocument();
   });
 
-  test("user profile", async () => {
-    mockUseSelector.mockReturnValue({ isAuthenticated: true });
+  test("user profile when authenticated", async () => {
+    mockUseSelector.mockReturnValue({ isAuthenticated: true, user: { id: 1 } });
 
     render(
       <MemoryRouter initialEntries={["/userprofile/5"]}>
@@ -121,7 +110,7 @@ describe("App with Protected Routes", () => {
     expect(await screen.findByText("Mock User Profile")).toBeInTheDocument();
   });
 
-  test("redirect login", async () => {
+  test("redirect login on user profile route when unauthenticated", async () => {
     mockUseSelector.mockReturnValue({ isAuthenticated: false });
 
     render(
@@ -133,8 +122,8 @@ describe("App with Protected Routes", () => {
     expect(await screen.findByText("Mock Login")).toBeInTheDocument();
   });
 
-  test("liked posts", async () => {
-    mockUseSelector.mockReturnValue({ isAuthenticated: true });
+  test("liked posts when authenticated", async () => {
+    mockUseSelector.mockReturnValue({ isAuthenticated: true, user: { id: 1 } });
 
     render(
       <MemoryRouter initialEntries={["/liked"]}>
@@ -145,7 +134,7 @@ describe("App with Protected Routes", () => {
     expect(await screen.findByText("Mock Liked Posts")).toBeInTheDocument();
   });
 
-  test("reirects login", async () => {
+  test("redirects login on liked posts route when unauthenticated", async () => {
     mockUseSelector.mockReturnValue({ isAuthenticated: false });
 
     render(
@@ -157,8 +146,8 @@ describe("App with Protected Routes", () => {
     expect(await screen.findByText("Mock Login")).toBeInTheDocument();
   });
 
-  test("quotes", async () => {
-    mockUseSelector.mockReturnValue({ isAuthenticated: true });
+  test("quotes when authenticated", async () => {
+    mockUseSelector.mockReturnValue({ isAuthenticated: true, user: { id: 1 } });
 
     render(
       <MemoryRouter initialEntries={["/quotes"]}>
@@ -169,7 +158,7 @@ describe("App with Protected Routes", () => {
     expect(await screen.findByText("Mock Quotes")).toBeInTheDocument();
   });
 
-  test("redirects login", async () => {
+  test("redirects login on quotes route when unauthenticated", async () => {
     mockUseSelector.mockReturnValue({ isAuthenticated: false });
 
     render(
@@ -181,8 +170,8 @@ describe("App with Protected Routes", () => {
     expect(await screen.findByText("Mock Login")).toBeInTheDocument();
   });
 
-  test("profile", async () => {
-    mockUseSelector.mockReturnValue({ isAuthenticated: true });
+  test("profile when authenticated", async () => {
+    mockUseSelector.mockReturnValue({ isAuthenticated: true, user: { id: 1 } });
 
     render(
       <MemoryRouter initialEntries={["/profile"]}>
@@ -193,7 +182,7 @@ describe("App with Protected Routes", () => {
     expect(await screen.findByText("Mock Profile")).toBeInTheDocument();
   });
 
-  test("redirets login", async () => {
+  test("redirects login on profile route when unauthenticated", async () => {
     mockUseSelector.mockReturnValue({ isAuthenticated: false });
 
     render(
@@ -205,7 +194,7 @@ describe("App with Protected Routes", () => {
     expect(await screen.findByText("Mock Login")).toBeInTheDocument();
   });
 
-  test("renders login page directly", async () => {
+  test("renders login page directly when unauthenticated", async () => {
     mockUseSelector.mockReturnValue({ isAuthenticated: false });
 
     render(
@@ -218,7 +207,7 @@ describe("App with Protected Routes", () => {
   });
 
   test("renders no match page", () => {
-    mockUseSelector.mockReturnValue({ isAuthenticated: true });
+    mockUseSelector.mockReturnValue({ isAuthenticated: true, user: { id: 1 } });
 
     render(
       <MemoryRouter initialEntries={["/unknown"]}>
@@ -229,3 +218,40 @@ describe("App with Protected Routes", () => {
     expect(screen.getByText("No Match Found")).toBeInTheDocument();
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

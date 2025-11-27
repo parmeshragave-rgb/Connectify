@@ -1,7 +1,7 @@
 
 import type { Persistor } from "redux-persist";
 
-describe("redux store + persist setup", () => {
+describe("redux store persist setup", () => {
   const ORIGINAL_LOCALSTORAGE = { ...window.localStorage };
 
   beforeEach(() => {
@@ -29,7 +29,7 @@ describe("redux store + persist setup", () => {
     window.localStorage = ORIGINAL_LOCALSTORAGE;
   });
 
-  test("calls persistReducer with correct persistConfig and storage delegates to localStorage", async () => {
+  test("calls persistReducer with correct persistConfig ", async () => {
     const persistReducerMock = jest.fn((config: any, reducer: any) => reducer);
     const persistStoreMock = jest.fn(() => ({} as Persistor));
 
@@ -75,7 +75,7 @@ describe("redux store + persist setup", () => {
     expect(persistor).toBeDefined();
   });
 
-  test("store dispatch works (basic smoke)", async () => {
+  test("store dispatch ", async () => {
     
     const persistReducerMock = jest.fn((config: any, reducer: any) => reducer);
     const persistStoreMock = jest.fn(() => ({ purge: jest.fn() } as any));

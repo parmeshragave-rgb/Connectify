@@ -59,7 +59,7 @@ function LikedPage() {
             <Grid item xs={12} md={6} key={post.id} display={"flex"} justifyContent={"center"}>
               <Card sx={{ width: "400px", height: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" }} elevation={5}>
                 <CardHeader sx={{bgcolor:"black",color:"whitesmoke",height:"100px"}}
-                  avatar={<Avatar src={userdata.find((u) => post?.userId === u?.id)?.image || user.username.charAt(0).toUpperCase()} sx={{ bgcolor: "black",cursor:"pointer" }}></Avatar>}
+                  avatar={<Avatar src={userdata.find((u) => post?.userId === u?.id)?.image || user?.username?.charAt(0)?.toUpperCase()} sx={{ bgcolor: "black",cursor:"pointer" }}></Avatar>}
                   title={<Typography fontWeight="bold" sx={{ wordBreak:"break-word",whiteSpace:"normal"}}>{post.title}</Typography>}
                   subheader={<Typography>{post?.views || 0} views</Typography>}
                 />
